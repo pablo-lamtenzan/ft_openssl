@@ -1,3 +1,3 @@
 # md5 hash
 
-implementation from scratch if md5 hash in C
+implementation from scratch of md5 hash in C
