@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 22:13:53 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/18 23:35:57 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/18 23:39:48 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static bool			read_from_pipe()
 
     index = 0;
     //printf("%s", PROMT);
-    while (get_next_line(STDIN_FILENO, &name)) // only read could be enought... ?
+    while (get_next_line(STDIN_FILENO, &name) > 0) // only read could be enought... ?
     {
         while (index < TOTAL_ALGORITHMS)
         {
@@ -67,7 +67,7 @@ static bool			read_from_pipe()
 		print_error(name);
 		return (1);
     }
-    
+    return (1);
 }
 
 int         main(int ac, char** av)
