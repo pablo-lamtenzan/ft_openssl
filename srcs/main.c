@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 22:13:53 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/19 19:45:04 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/19 21:59:56 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ static bool			read_from_pipe(t_parse* parse)
     return (1);
 }
 
-/* Have to probally here to read from pipes too, but i'm not sure at all */
 static bool			read_standart(t_parse* parse, int ac, char** av)
 {
 	size_t			index;
