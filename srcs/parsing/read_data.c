@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   read_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/18 22:13:53 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/19 21:59:56 by pablo            ###   ########.fr       */
+/*   Created: 2020/10/19 23:22:28 by pablo             #+#    #+#             */
+/*   Updated: 2020/10/19 23:22:55 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ bool				get_data_from_stdin(char **data)
 	return (true);
 }
 
-static bool			read_from_pipe(t_parse* parse)
+bool			    read_from_pipe(t_parse* parse)
 {
     char*           name;
     size_t          index;
@@ -68,7 +68,7 @@ static bool			read_from_pipe(t_parse* parse)
     return (1);
 }
 
-static bool			read_standart(t_parse* parse, int ac, char** av)
+bool			    read_standart(t_parse* parse, int ac, char** av)
 {
 	size_t			index;
 	int				files_pos;
@@ -87,17 +87,4 @@ static bool			read_standart(t_parse* parse, int ac, char** av)
 		}
 	}
 	print_error(av[1]);
-}
-
-int         main(int ac, char** av)
-{
-	t_parse	parse;
-
-	parse = (t_parse){.flags=0, .input_to_print=NULL, .string_input=NULL, .files=NULL};
-
-    if (ac == 1)
-        read_from_pipe(&parse);
-	else
-    	read_standart(&parse, ac, av);
-	return (hash_and_print(parse));
 }

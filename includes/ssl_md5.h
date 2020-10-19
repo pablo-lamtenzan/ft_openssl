@@ -1,17 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   md5.h                                              :+:      :+:    :+:   */
+/*   ssl_md5.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: plamtenz <plamtenz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:14:33 by plamtenz          #+#    #+#             */
-/*   Updated: 2020/02/02 19:08:25 by plamtenz         ###   ########.fr       */
+/*   Updated: 2020/10/20 00:08:16 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MD5_H
-# define MD5_H
+#ifndef SSL_MD5_H
+# define SSL_MD5_H
+
+#include <limits.h>
 
 /*
 **      -> DEF CALC VECTORS
@@ -31,18 +33,20 @@
 # define BIT_UINT               32
 # define BYTE_UINT              4
 # define MD5_CYCLE_IT           64
+# define CHUNK_BYTE_SIZE        64
+# define CHUNK_BIT_SIZE         CHUNK_BYTE_SIZE * CHAR_BIT
 
 
 /*
 **      -> DATA MANAGEMENT
 */
-typedef struct                  s_md5
+typedef struct                  s_ssl_md5
 {
     unsigned                    buff[4];
     unsigned                    buff_saved[4];
     unsigned                    bits;
     unsigned                    bytes;
-}                               t_md5;
+}                               t_ssl_md5;
 
 /*
 **      -> CONST ARRAY CONVERSORS

@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 17:44:39 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/19 21:57:56 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/19 23:14:52 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char**			parse_files(int index, int ac, char** av)
 	{
 		if (!stat(av[index - 1], &stat_path) || !S_ISREG(stat_path.st_mode))
 			return (NULL);
-		files[size - index - 1] = av[index - 1];
+		files[size - index - 1] = ft_strdup(av[index - 1]);
 	}
 	files[size - index - 1] = 0;
 	return (files);

@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 22:20:28 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/19 23:01:58 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/20 00:31:17 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,31 @@ typedef struct                  s_parse
     char*                       input_to_print;
     char*                       pipe_data;
     char**                      files;
-    char*                       (*algorithm)(const char*);
+    const char*                 (*algorithm)(const char*);
 }                               t_parse;
 
 typedef struct					s_algorithms
 {
     char*						name;
-    char*						(*algorithm)(const char*);
+    const char*			        (*algorithm)(const char*);
 }								 t_algorithms;
 
+/*
+** ***************************** PARSE **********************************************
+*/
+bool			                read_standart(t_parse* parse, int ac, char** av);
+bool			                read_from_pipe(t_parse* parse);
+bool				            get_data_from_stdin(char **data);
 t_algorithms                	get_algorithm(size_t index);
 char**			                parse_files(int index, int ac, char** av);
 int				                parse_flags(t_parse** parse, int ac, char** av);
 bool				            get_data_from_stdin(char **data);
 int                             hash_and_print(t_parse* parse);
+void                            clear_all(t_parse* parse);
+
+/*
+** **************************** ALGORITHMS *******************************************
+*/
+const char*                     sll_md5(const char* data);
 
 #endif
