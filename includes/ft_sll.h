@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 22:20:28 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/18 23:21:55 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/19 19:10:16 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,21 @@
 
 #define PROMT					"OpenSLL> "
 
+#define PRINT_INPUT             1
+#define QUIET_MODE              2
+#define REV_OUTPUT              4
+#define STRING_INPUT            8
+
+typedef struct                  s_parse
+{
+    char                        flags;
+    char*                       string_input;
+    char*                       input_to_print;
+    char*                       pipe_data;
+    char**                      files;
+    bool                        (*algorithm)(char*);
+}                               t_parse;
+
 typedef struct					s_algorithms
 {
     char*						name;
@@ -30,5 +45,8 @@ typedef struct					s_algorithms
 }								 t_algorithms;
 
 t_algorithms                	get_algorithm(size_t index);
+char**			                parse_files(int index, int ac, char** av);
+int				                parse_flags(t_parse** parse, int ac, char** av);
+bool				            get_data_from_stdin(char **data);
 
 #endif

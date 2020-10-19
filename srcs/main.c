@@ -6,13 +6,13 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 22:13:53 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/18 23:39:48 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/19 19:45:04 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_sll.h>
 
-static bool			get_data_from_stdin(char **data)
+bool				get_data_from_stdin(char **data)
 {
 	int				fd;
 	size_t			size;
@@ -41,10 +41,9 @@ static bool			get_data_from_stdin(char **data)
 	return (true);
 }
 
-static bool			read_from_pipe()
+static bool			read_from_pipe(t_parse* parse)
 {
     char*           name;
-    char*			data;
     size_t          index;
     t_algorithms    algorithm;
 
@@ -54,12 +53,11 @@ static bool			read_from_pipe()
     {
         while (index < TOTAL_ALGORITHMS)
         {
-            if (ft_strncmp((algorithm = get_algorithm(index++)).name, name, ft_strlen(name)) \
-                    && get_data_from_stdin(&data))
+            if (!ft_strncmp((algorithm = get_algorithm(index++)).name, name, ft_strlen(name)) \
+                    && get_data_from_stdin(&parse->pipe_data))
 			{
-				algorithm.algorithm(data);
+				parse->algorithm = algorithm.algorithm;
 				free(name);
-				free(data);
 				return (0);
 			}
 			free(name);
@@ -70,10 +68,37 @@ static bool			read_from_pipe()
     return (1);
 }
 
+/* Have to probally here to read from pipes too, but i'm not sure at all */
+static bool			read_standart(t_parse* parse, int ac, char** av)
+{
+	size_t			index;
+	int				files_pos;
+	t_algorithms	algorithm;
+
+	index = 0;
+	while (index < TOTAL_ALGORITHMS)
+	{
+		if (!ft_strncmp((algorithm = get_algorithm(index)).name, av[1], ft_strlen(av[1])) \
+				&& (files_pos = parse_flags(&parse, ac, av))
+				&& get_data_from_stdin(&parse->pipe_data))
+		{
+			parse->files = parse_files(files_pos, ac, av);
+			parse->algorithm = algorithm.algorithm;
+			return (0);
+		}
+	}
+	print_error(av[1]);
+}
+
 int         main(int ac, char** av)
 {
-    /* Read from stdin ( echo "something" | ./ft_sll md5 ) */
+	t_parse	parse;
+
+	parse = (t_parse){.flags=0, .input_to_print=NULL, .string_input=NULL, .files=NULL};
+
     if (ac == 1)
-        return (read_from_pipe());
-    return (read_from_arguments());
+        read_from_pipe(&parse);
+	else
+    	read_standart(&parse, ac, av);
+	return (hash_and_print(parse));
 }
