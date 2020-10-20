@@ -6,12 +6,13 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:19:15 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/20 20:27:31 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/20 22:58:42 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ssl_md5.h>
 #include <algorithms.h>
+#include <ft.h>
 
 /*
     Each message has 512 bytes lenght (32 bytes * 16 words).
@@ -64,11 +65,12 @@ static void             sll_md5_crypt(t_ssl_md5* md5, unsigned char* data)
 }
 
 /* mesage lenght must be "n" bits where n = (512 * z) + 448 and z is any number */
-/* format of the msg : [message][1][pagging of 0][msg_len] */
+/* format of the msg : [message][1][pagging of 0s][msg_len] */
 static unsigned int     append_padding(char** message, unsigned int message_size)
 {
     unsigned long       size;
     unsigned int        msg_len;
+
     size = message_size * CHAR_BIT;
     while (++size % CHUNK_BIT_SIZE != 448)
         ;
@@ -88,13 +90,13 @@ const char*             sll_md5(const char* data)
     
 	md5 = (t_ssl_md5) {.buff[A]=RVECT_A, .buff[B]=RVECT_B, .buff[C]=RVECT_C, .buff[D]=RVECT_D};
 	if (!(message = ft_calloc(sizeof(char) * (size + CHUNK_BYTE_SIZE))) \
-		|| !(digest = ft_calloc(sizeof(md5.buff) / 2)))
+		|| !(digest = ft_calloc(sizeof(md5.buff))))
 		return ((void*)0);
 	ft_strlcpy(message, data, size);
     md5.bytes = append_padding(&message, size);
     md5.bits = md5.bytes * CHAR_BIT;
 	sll_md5_crypt(&md5, message);
-	ft_memcpy(digest, md5.buff, sizeof(md5.buff) / 2);
+	ft_memcpy(digest, md5.buff, sizeof(md5.buff));
 	free(message);
-	return (int_to_str(digest, swap_32bits));
+	return (int_to_str(digest, swap_u32bits));
 }

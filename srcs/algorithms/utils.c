@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 18:03:59 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/20 21:06:32 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/20 22:14:07 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-// probally is that but i m sure sure about it, have to test
-// for md5 the size must be 16 (if size == 16 all is ok)
-// HAVE TO CONCATENATE THE 4 BUFFS USING THEIR DECIMAL REPRESENTATION
 const char*         int_to_str(unsigned int* digest, unsigned int (*litle_endian)(unsigned int))
 {
     char*           result;
@@ -44,7 +41,7 @@ const char*         int_to_str(unsigned int* digest, unsigned int (*litle_endian
     return (result);
 }
 
-unsigned int        swap_32bits(unsigned int target)
+unsigned int        swap_u32bits(unsigned int target)
 {
     return (((target & 0xff) << 24) | ((target & 0xff00) << 8) \
             | ((target & 0xff0000) >> 8) | ((target & 0xff000000) >> 24));
@@ -52,9 +49,19 @@ unsigned int        swap_32bits(unsigned int target)
 
 // The algorithm inverts neigbours inverting first blocks of 1, them of 2, and finally of 4
 /* ABCDEFGH -> BADCFEHG -> DCBAHGFE -> HGFEDCBA */
-unsigned long       swap_64bits(unsigned long target)
+unsigned long       swap_u64bits(unsigned long target)
 {
     target = ((target << 8) & 0xff00ff00ff00ff00ull) | ((target >> 8) & 0xff00ff00ff00ffull);
     target = ((target << 16) & 0xffff0000ffff0000ull) | ((target >> 16) & 0xffff0000ffffull);
     return ((target << 32) | (target >> 32));
+}
+
+unsigned int vec_rot_left(unsigned int vec, unsigned int rot)
+{
+    return ((vec << rot) | vec >> (32 - rot));
+}
+
+unsigned int vec_rot_right(unsigned int vec, unsigned int rot)
+{
+    return ((vec >> rot) | vec << (32 - rot));
 }
