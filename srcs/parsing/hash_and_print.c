@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 22:02:00 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/19 23:00:33 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/20 18:39:02 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int         hash_and_print(t_parse* parse)
     {
         if (!(parse->flags & QUIET_MODE) && !(parse->flags & REV_OUTPUT))
             printf("%s", MD5_FILE);
-        print_hash(parse->algorithm(get_file_data(parse->files[index++])), parse->flags & REV_OUTPUT, !(parse->flags & REV_OUTPUT));
+        print_hash(parse->algorithm(get_data_from_file(parse->files[index++])), parse->flags & REV_OUTPUT, !(parse->flags & REV_OUTPUT));
         if (parse->flags & REV_OUTPUT && !(parse->flags & QUIET_MODE))
             printf("%s\n", " file");
     }

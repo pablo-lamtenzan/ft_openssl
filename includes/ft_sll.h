@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 22:20:28 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/20 00:31:17 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/20 18:54:47 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
-#define TOTAL_ALGORITHMS		5
+#define TOTAL_ALGORITHMS		4
 #define BUFFER_SIZE				2048
 
 #define PROMT					"OpenSLL> "
@@ -52,11 +52,11 @@ typedef struct					s_algorithms
 */
 bool			                read_standart(t_parse* parse, int ac, char** av);
 bool			                read_from_pipe(t_parse* parse);
-bool				            get_data_from_stdin(char **data);
+bool				            get_data_from_fd(int fd, char **data);
+const char*			            get_data_from_file(const char* filename);
 t_algorithms                	get_algorithm(size_t index);
 char**			                parse_files(int index, int ac, char** av);
 int				                parse_flags(t_parse** parse, int ac, char** av);
-bool				            get_data_from_stdin(char **data);
 int                             hash_and_print(t_parse* parse);
 void                            clear_all(t_parse* parse);
 
@@ -64,5 +64,8 @@ void                            clear_all(t_parse* parse);
 ** **************************** ALGORITHMS *******************************************
 */
 const char*                     sll_md5(const char* data);
+const char*                     sll_sha256(const char* data);
+const char*                     sll_sha512(const char* data);
+const char*                     sll_wirthlpool(const char* data);
 
 #endif

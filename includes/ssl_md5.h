@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:14:33 by plamtenz          #+#    #+#             */
-/*   Updated: 2020/10/20 00:08:16 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/20 18:36:01 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 
 #include <limits.h>
 
-/*
-**      -> DEF CALC VECTORS
-*/
 # define A                      0
 # define B                      1
 # define C                      2
@@ -27,30 +24,20 @@
 # define RVECT_C                0x98badcfe
 # define RVECT_D                0x10325476
 
-/*
-**      -> DEF SIZE MACROS
-*/
 # define BIT_UINT               32
 # define BYTE_UINT              4
 # define MD5_CYCLE_IT           64
 # define CHUNK_BYTE_SIZE        64
 # define CHUNK_BIT_SIZE         CHUNK_BYTE_SIZE * CHAR_BIT
 
-
-/*
-**      -> DATA MANAGEMENT
-*/
 typedef struct                  s_ssl_md5
 {
     unsigned                    buff[4];
-    unsigned                    buff_saved[4];
+    unsigned                    algo_buff[4];
     unsigned                    bits;
     unsigned                    bytes;
 }                               t_ssl_md5;
 
-/*
-**      -> CONST ARRAY CONVERSORS
-*/
 extern const unsigned g_kernel[64] = {
     0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee, 0xf57c0faf, 0x4787c62a, 
     0xa8304613, 0xfd469501, 0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
@@ -64,15 +51,13 @@ extern const unsigned g_kernel[64] = {
     0xffeff47d, 0x85845dd1, 0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
 	0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391};
     
-extern const unsigned g_shitf[64] = {
+extern const unsigned g_shift[64] = {
     7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
 	5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20,
 	4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
-	6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21};
+	6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21
+    };
 
-/*
-**      -> FUNCTS
-*/
 unsigned                        vec_f(unsigned b, unsigned c, unsigned d);
 unsigned                        vec_g(unsigned b, unsigned c, unsigned d);
 unsigned                        vec_h(unsigned b, unsigned c, unsigned d);

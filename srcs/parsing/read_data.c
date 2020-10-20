@@ -6,13 +6,22 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:22:28 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/19 23:22:55 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/20 18:48:44 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_sll.h>
 
-bool				get_data_from_stdin(char **data)
+const char*			get_data_from_file(const char* filename)
+{
+	char*			data;
+
+	if (get_data_from_fd(filename, &data));
+		return (data);
+	return (NULL);
+}
+
+bool				get_data_from_fd(int path, char **data)
 {
 	int				fd;
 	size_t			size;
@@ -20,7 +29,7 @@ bool				get_data_from_stdin(char **data)
 	char*			buffer;
 	char*			aux;
 
-	if ((fd = open(STDIN_FILENO, O_RDONLY)) < 0 \
+	if ((fd = open(path, O_RDONLY)) < 0 \
 			|| !(buffer = malloc(sizeof(char) * BUFFER_SIZE))
 			|| !(*data = ft_calloc(1, 1)))
 		return (false);
@@ -54,7 +63,7 @@ bool			    read_from_pipe(t_parse* parse)
         while (index < TOTAL_ALGORITHMS)
         {
             if (!ft_strncmp((algorithm = get_algorithm(index++)).name, name, ft_strlen(name)) \
-                    && get_data_from_stdin(&parse->pipe_data))
+                    && get_data_from_fd(&parse->pipe_data, STDIN_FILENO))
 			{
 				parse->algorithm = algorithm.algorithm;
 				free(name);
@@ -79,7 +88,7 @@ bool			    read_standart(t_parse* parse, int ac, char** av)
 	{
 		if (!ft_strncmp((algorithm = get_algorithm(index)).name, av[1], ft_strlen(av[1])) \
 				&& (files_pos = parse_flags(&parse, ac, av))
-				&& get_data_from_stdin(&parse->pipe_data))
+				&& get_data_from_fd(&parse->pipe_data, STDIN_FILENO))
 		{
 			parse->files = parse_files(files_pos, ac, av);
 			parse->algorithm = algorithm.algorithm;
