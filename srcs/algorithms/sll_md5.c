@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:19:15 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/20 18:35:12 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/20 20:27:31 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,18 @@ static void             sll_md5_crypt(t_ssl_md5* md5, unsigned char* data)
 }
 
 /* mesage lenght must be "n" bits where n = (512 * z) + 448 and z is any number */
-static unsigned int     get_lenght_bytes(char* message, const unsigned int data_size)
+/* format of the msg : [message][1][pagging of 0][msg_len] */
+static unsigned int     append_padding(char** message, unsigned int message_size)
 {
     unsigned long       size;
-
-    size = data_size * CHAR_BIT;
+    unsigned int        msg_len;
+    size = message_size * CHAR_BIT;
     while (++size % CHUNK_BIT_SIZE != 448)
         ;
+    msg_len = size;
     size /= CHAR_BIT;
+    *message[size] = 1;
+    ft_memcpy(*message + size, &msg_len, 4);
     return (size + 8);
 }
 
@@ -87,7 +91,7 @@ const char*             sll_md5(const char* data)
 		|| !(digest = ft_calloc(sizeof(md5.buff) / 2)))
 		return ((void*)0);
 	ft_strlcpy(message, data, size);
-    md5.bytes = get_lenght_bytes(message, size);
+    md5.bytes = append_padding(&message, size);
     md5.bits = md5.bytes * CHAR_BIT;
 	sll_md5_crypt(&md5, message);
 	ft_memcpy(digest, md5.buff, sizeof(md5.buff) / 2);

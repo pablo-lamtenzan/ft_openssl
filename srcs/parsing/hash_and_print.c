@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 22:02:00 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/20 18:39:02 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/20 20:47:32 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void print_hash(const char* hash, bool rev_mode, bool endline)
         printf("%s%c", reverse(hash), endline ? '\n' : '\0');
     else
         printf("%s%c", hash, endline ? '\n' : '\0');
+    free(hash);
 }
 
 int         hash_and_print(t_parse* parse)
