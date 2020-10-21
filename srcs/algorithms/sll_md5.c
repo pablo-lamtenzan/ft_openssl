@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:19:15 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/20 22:58:42 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/21 16:24:14 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void             sll_md5_crypt_message(unsigned int* vectors,
 
 static void             sll_md5_crypt(t_ssl_md5* md5, unsigned char* data)
 {
-    const int           chunks_nb = md5->bits / CHUNK_BIT_SIZE;
+    const unsigned int  chunks_nb = md5->bits / CHUNK_BIT_SIZE;
     int                 chunk_index;
 
     chunk_index = -1;
