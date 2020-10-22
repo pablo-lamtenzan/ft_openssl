@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 21:12:55 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/21 22:06:02 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 19:19:20 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,5 @@ static unsigned int const	g_kernel[64] = {
 	0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
 	0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 };
-
-int				append_padding_shaXXX(unsigned long* message,
-    unsigned int message_size, unsigned long (*swap_bits)(unsigned long));
 
 #endif

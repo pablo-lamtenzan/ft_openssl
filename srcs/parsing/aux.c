@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 22:38:18 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 18:32:44 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 19:45:22 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 // ft_memcpy
 // print errors ?
 
-#include <ft_sll.h>
+#include <ft_ssl.h>
 #include <ft.h>
 
 void                        swap_range(char *a, char *b, bool range)
@@ -35,7 +35,7 @@ void                        swap_range(char *a, char *b, bool range)
 }
 
 /* ABCDEFGH -> BADCFEHG -> DCBAHGFE -> HGFEDCBA */
-char*                       reverse(const char* hash)
+char*                       reverse(char* hash)
 {
     size_t                  start;
     size_t                  end;

@@ -6,11 +6,11 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 17:44:39 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 18:36:02 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 19:45:34 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ft_sll.h>
+#include <ft_ssl.h>
 #include <ft.h>
 
 static bool		parse_string_input(t_parse* parse, char* string_input)
@@ -26,7 +26,7 @@ int				parse_flags(t_parse** parse, int ac, char** av)
 {
     int         curr_arg;
     int         index;
-    const char* flags = { "-p", "-q", "-r", "-s" };
+    const char 	*flags[4] = { "-p", "-q", "-r", "-s" };
 	char		last;
 
     curr_arg = 1;
@@ -70,7 +70,7 @@ bool			parse_message_digest(t_parse* parse, int ac, char** av, t_algorithms* alg
 	int			files_pos;
 
 	if (!(files_pos = parse_flags(&parse, ac, av)) \
-			|| get_data_from_fd(&parse->pipe_data, STDIN_FILENO))
+			|| get_data_from_fd(STDIN_FILENO, &parse->pipe_data))
 		return (false);
 	parse->files = parse_files(files_pos, ac, av);
 	parse->algorithm = algorithm->algorithm;

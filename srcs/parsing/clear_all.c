@@ -6,11 +6,12 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:09:54 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/19 23:14:23 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 19:45:26 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ft_sll.h>
+#include <ft_ssl.h>
+#include <stdlib.h>
 
 void            clear_all(t_parse* parse)
 {

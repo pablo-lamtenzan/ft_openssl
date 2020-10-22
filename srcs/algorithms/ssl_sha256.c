@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sll_sha256.c                                       :+:      :+:    :+:   */
+/*   ssl_sha256.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 21:19:52 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 18:47:52 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 19:33:19 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void				cp_array_u32bits(unsigned int* dest, unsigned int* src)
 static void				sll_sha256_crypt(t_ssl_sha256* sha256, unsigned int* data)
 {
 	const unsigned int	chunks_nb = sha256->bits / CHUNK_BIT_SIZE;
-	unsigned int*		tmp[64];
+	unsigned int		tmp[64];
 	int					chunk_index;
 	int					update_index;
 
@@ -77,6 +77,27 @@ static void				sll_sha256_crypt(t_ssl_sha256* sha256, unsigned int* data)
 		while (++update_index < 8)
 			sha256->buff[update_index] += sha256->algo_buff[update_index];
 	}
+}
+
+int				append_padding_sha_u32(unsigned int* message, unsigned int message_size)
+{
+	unsigned long		size;
+	unsigned int		msg_len;
+	unsigned long		chunks_nb;
+	int					iterator;
+
+	iterator = -1;
+	size = msg_len * CHAR_BIT + CHUNK_BYTE_SIZE;
+	while (++size & CHUNK_BIT_SIZE)
+		;
+	msg_len = size;
+	chunks_nb = size / CHUNK_BIT_SIZE;
+	size % CHUNK_BIT_SIZE ? chunks_nb++ : 0;
+	message[message_size] = 1;
+	while (++iterator < (chunks_nb * 16) - 1)
+		message[iterator] = (unsigned int)swap_u32bits((unsigned long)message[iterator]);
+	message[((chunks_nb * CHUNK_BIT_SIZE - CHUNK_BYTE_SIZE) / 32) + 1] = msg_len;
+	return (chunks_nb * CHUNK_BYTE_SIZE);
 }
 
 const char*				sll_sha256(const char *data)
@@ -97,10 +118,9 @@ const char*				sll_sha256(const char *data)
 		|| !(digest = ft_calloc(sizeof(unsigned int), 8)))
 		return ((void*)0);
 	ft_strlcpy(message, data, size);
-	sha256.bytes = append_padding_shaXXX((unsigned int*)message, size, \
-			swap_u32bits);
+	sha256.bytes = append_padding_sha_u32((unsigned int*)message, size);
 	sha256.bits = sha256.bytes * CHAR_BIT;
-	sll_sha256_crypt(&sha256, message);
+	sll_sha256_crypt(&sha256, (unsigned int*)message);
 	ft_memcpy(digest, sha256.buff, sizeof(sha256.buff));
 	free(message);
 	return (long_to_str((unsigned long*)digest, swap_u64bits));

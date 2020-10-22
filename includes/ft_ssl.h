@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_sll.h                                           :+:      :+:    :+:   */
+/*   ft_ssl.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 22:20:28 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 18:31:29 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 19:45:04 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_SSL_H
-# define FT_SLL_H
+# define FT_SSL_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -46,12 +46,8 @@ typedef struct					s_algorithms
 {
     char*						name;
     const char*			        (*algorithm)(const char*);
-    bool                        (*parse)(t_parse*, int, char**, t_algorithms*);
+    bool                        (*parse)(t_parse*, int, char**, struct s_algorithms*);
     int                         (*hash_and_print)(t_parse* parse);
-    {
-        /* data */
-    };
-    )
 }								 t_algorithms;
 
 /*
@@ -66,7 +62,7 @@ t_algorithms                	get_algorithm(size_t index);
 char**			                parse_files(int index, int ac, char** av);
 int				                parse_flags(t_parse** parse, int ac, char** av);
 int                             hash_and_print_digest(t_parse* parse);
-char*                           reverse(const char* hash);
+char*                           reverse(char* hash);
 void                            clear_all(t_parse* parse);
 
 /*

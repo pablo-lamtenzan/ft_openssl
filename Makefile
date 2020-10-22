@@ -1,6 +1,20 @@
-NAME=ft_ssl
 
-SRCS= $(addprefix $(SRCS)/, \
+NAME	= ft_ssl
+
+CC		= gcc
+DBG		= valgrind
+RM		= rm
+
+SRCDIR	= srcs
+BLDDIR	= bin
+OBJDIR	= bin
+INCDIR	= includes
+
+CFLAGS	= -Wall -Wextra -Werror #-g3 -fsanitize=address
+IFLAGS	= -I$(INCDIR)
+
+
+SRCS= $(addprefix $(SRCDIR)/, \
 			$(addprefix parsing/, \
 				read_data.c \
 				parse.c \
@@ -8,7 +22,6 @@ SRCS= $(addprefix $(SRCS)/, \
 				clear_all.c \
 				aux.c) \
 			$(addprefix algorithms/, \
-				shaXXX_fill.c \
 				ssl_md5.c \
 				ssl_md5_fill.c \
 				ssl_sha256.c \
@@ -24,26 +37,40 @@ SRCS= $(addprefix $(SRCS)/, \
 				main.c) \
 	)
 
-OBJDIR=bin
-OBJS= $(SRCS:srcs/%.c=$(OBJDIR)/%.o)
+OBJS	= $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
+OBJDS	= $(addprefix $(OBJDIR)/, algorithms ft main parsing)
 
+HDRS	= $(addprefix $(INCDIR)/, ft_ssl.h ft.h algorithms.h get_next_line.h \
+		sll_md5.h ssl_sha256.h ssl_sha512.h)
 
-all: $(NAME)
-	@echo Done.
+all:		$(NAME)
 
-$(NAME) : $(OBJDIR) $(OBJS)
-	gcc -o $(NAME) $(OBJS)
+$(OBJDS):
+	@echo MK $@
+	mkdir -p $@
+
+$(NAME):		$(OBJDS) $(OBJS)
+	@echo LINK $(NAME)
+	$(CC) -o $(NAME) $(CFLAGS) $(IFLAGS) $(OBJS)
 
 $(OBJDIR):
+	@echo MK $@
 	@mkdir -p $@
 
-$(OBJDIR)/%.o : srcs/%.c
-	gcc -c -o $(OBJDIR)/$(shell basename $@)  -I./includes $<
+$(OBJDIR)/%.o:	$(SRCDIR)/%.c $(HDRS) Makefile
+	@echo CC $<
+	$(CC) $(CFLAGS) $(IFLAGS) -c -o $@ $<
 
 clean:
-	rm -rf $(OBJDIR)
+	@echo RM $(OBJDIR)
+	@$(RM) -rf $(OBJDIR)
 
-fclean: clean
-	rm -rf $(NAME)
+fclean:			clean
+	@echo RM $(NAME)
+	@$(RM) -f $(NAME)
 
-re: fclean all
+re:				fclean all
+
+.PHONY: clean fclean minilibX
+
+$(VERBOSE).SILENT:

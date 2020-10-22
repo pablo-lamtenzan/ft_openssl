@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 20:48:30 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 18:14:35 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 19:25:50 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 size_t 		ft_strlen(const char* str)
 {
-    char*	start;
+    char*	it;
 	
-	start = str;
-	while (*str)
-		str++;
-	return (str - start);
+	it = (char* )str;
+	while (*it)
+		it++;
+	return (it - str);
 }
 
 char*   ft_uitoa_base(unsigned int nb, int base, char letter)

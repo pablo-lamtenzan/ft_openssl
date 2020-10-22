@@ -6,32 +6,33 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:22:28 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 18:50:13 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 19:45:43 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ft_sll.h>
+#include <ft_ssl.h>
 #include <ft.h>
 
 const char*			get_data_from_file(const char* filename)
 {
 	char*			data;
+	int				fd;
 
-	if (get_data_from_fd(filename, &data));
+	if ((fd = open(filename, O_RDONLY)) < 0)
+		return (NULL);
+	if (get_data_from_fd(fd, &data));
 		return (data);
 	return (NULL);
 }
 
-bool				get_data_from_fd(int path, char **data)
+bool				get_data_from_fd(int fd, char **data)
 {
-	int				fd;
 	size_t			size;
 	ssize_t			bytes_read;
 	char*			buffer;
 	char*			aux;
 
-	if ((fd = open(path, O_RDONLY)) < 0 \
-			|| !(buffer = malloc(sizeof(char) * BUFFER_SIZE))
+	if (!(buffer = malloc(sizeof(char) * BUFFER_SIZE))
 			|| !(*data = ft_calloc(1, 1)))
 		return (false);
 	**data = 0;
@@ -64,7 +65,7 @@ bool			    read_from_pipe(t_parse* parse)
         while (index < TOTAL_ALGORITHMS)
         {
             if (!ft_strncmp((algorithm = get_algorithm(index++)).name, name, ft_strlen(name)) \
-                    && get_data_from_fd(&parse->pipe_data, STDIN_FILENO))
+                    && get_data_from_fd(STDIN_FILENO, &parse->pipe_data))
 			{
 				parse->algorithm = algorithm.algorithm;
 				parse->hash_and_print = algorithm.hash_and_print;

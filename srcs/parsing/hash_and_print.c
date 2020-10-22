@@ -6,19 +6,20 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 22:02:00 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 18:29:01 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 19:45:30 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ft_sll.h>
+#include <ft_ssl.h>
+#include <stdlib.h>
 
 static void print_hash(const char* hash, bool rev_mode, bool endline)
 {
     if (rev_mode)
-        printf("%s%c", reverse(hash), endline ? '\n' : '\0');
+        printf("%s%c", reverse((char*)hash), endline ? '\n' : '\0');
     else
         printf("%s%c", hash, endline ? '\n' : '\0');
-    free(hash);
+    free((char*)hash);
 }
 
 int         hash_and_print_digest(t_parse* parse)
