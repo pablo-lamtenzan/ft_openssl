@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/18 20:42:06 by plamtenz          #+#    #+#             */
-/*   Updated: 2020/10/22 18:03:02 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 20:59:08 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+#include <ft.h>
 
 typedef unsigned long		t_size;
 
@@ -27,10 +28,13 @@ typedef unsigned long		t_size;
 #define BUFFER_SIZE         2048
 
 int							get_next_line(const int fd, char **lines);
+char						*ft_strjoin(const char *s1, const char *s2);
+/*
 int							ft_strlen(const char *str);
 char						*ft_strdup(const char *src);
-char						*ft_strjoin(const char *s1, const char *s2);
+
 void						*ft_calloc(t_size nitems, t_size n);
 void						ft_bzero(void *str, t_size n);
+*/
 
 #endif

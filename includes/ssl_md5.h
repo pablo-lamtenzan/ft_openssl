@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:14:33 by plamtenz          #+#    #+#             */
-/*   Updated: 2020/10/22 19:31:44 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 21:03:01 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,5 @@ unsigned                        vec_f(unsigned b, unsigned c, unsigned d);
 unsigned                        vec_g(unsigned b, unsigned c, unsigned d);
 unsigned                        vec_h(unsigned b, unsigned c, unsigned d);
 unsigned                        vec_i(unsigned b, unsigned c, unsigned d);
-unsigned                        vec_rot_left(unsigned vec, unsigned rot);
 
 #endif

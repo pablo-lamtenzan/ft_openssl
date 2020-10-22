@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sll_md5.c                                          :+:      :+:    :+:   */
+/*   ssl_md5.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:19:15 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 18:44:44 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 21:03:11 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void             sll_md5_crypt_message(unsigned int* vectors,
         vectors[A] = vectors[D];
         vectors[D] = vectors[C];
         vectors[C] = vectors[B];
-        vectors[B] += vec_rot_left(crypt, g_shift[iterator]);
+        vectors[B] += vec_rot_left_u32(crypt, g_shift[iterator]);
     }
 }
 

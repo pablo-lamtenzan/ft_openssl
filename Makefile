@@ -10,7 +10,7 @@ BLDDIR	= bin
 OBJDIR	= bin
 INCDIR	= includes
 
-CFLAGS	= -Wall -Wextra -Werror #-g3 -fsanitize=address
+CFLAGS	= #-Wall -Wextra -Werror #-g3 -fsanitize=address
 IFLAGS	= -I$(INCDIR)
 
 
@@ -37,7 +37,7 @@ SRCS= $(addprefix $(SRCDIR)/, \
 				main.c) \
 	)
 
-OBJS	= $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
+OBJS	= $(patsubst $(SRCS)/%.c, $(OBJDIR)/%.o, $(SRCS))
 OBJDS	= $(addprefix $(OBJDIR)/, algorithms ft main parsing)
 
 HDRS	= $(addprefix $(INCDIR)/, ft_ssl.h ft.h algorithms.h get_next_line.h \
@@ -71,6 +71,6 @@ fclean:			clean
 
 re:				fclean all
 
-.PHONY: clean fclean minilibX
+.PHONY: clean fclean all
 
 $(VERBOSE).SILENT:

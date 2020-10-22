@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 22:38:18 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 19:45:22 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 21:00:41 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ t_algorithms                get_algorithm(size_t index)
                 .hash_and_print=hash_and_print_digest},
         {.algorithm=sll_sha512, .name="sha512", .parse=parse_message_digest, \
                 .hash_and_print=hash_and_print_digest},
-        {.algorithm=sll_wirthlpool, .name="wirthlpool", .parse=parse_message_digest, \
-                .hash_and_print=hash_and_print_digest}
+        /*{.algorithm=sll_wirthlpool, .name="wirthlpool", .parse=parse_message_digest, \
+                .hash_and_print=hash_and_print_digest}*/
     };
     return (algorithm[index]);
 }

@@ -1,18 +1,20 @@
 /* ************************************************************************** */
-/*                                                          LE - /            */
-/*                                                              /             */
-/*   get_next_line_utils.c                            .::    .:/ .      .::   */
-/*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: plamtenz <marvin@le-101.fr>                +:+   +:    +:    +:+     */
-/*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2019/10/21 16:24:44 by plamtenz     #+#   ##    ##    #+#       */
-/*   Updated: 2019/11/20 19:45:07 by plamtenz    ###    #+. /#+    ###.fr     */
-/*                                                         /                  */
-/*                                                        /                   */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/21 16:24:44 by plamtenz          #+#    #+#             */
+/*   Updated: 2020/10/22 20:57:15 by pablo            ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
 
+#include "get_next_line.h"
+#include <ft.h>
+
+/*
 int		ft_strlen(const char *str)
 {
 	int i;
@@ -48,6 +50,7 @@ char	*ft_strdup(const char *src)
 	start[i] = '\0';
 	return (start);
 }
+*/
 
 char	*ft_strjoin(const char *s1, const char *s2)
 {
@@ -66,6 +69,7 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	res[i++] = '\0';
 	return (res);
 }
+/*
 
 void	*ft_calloc(t_size nitems, t_size n)
 {
@@ -85,3 +89,4 @@ void	ft_bzero(void *str, t_size n)
 	while (n--)
 		*start++ = 0;
 }
+*/
