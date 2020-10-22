@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 23:13:15 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/21 20:07:58 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/21 22:10:08 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <algorithms.h>
 
 int				append_padding_shaXXX(unsigned long* message,
-    unsigned int message_size, unsigned int (*swap_bits)(unsigned int))
+    unsigned int message_size, unsigned long (*swap_bits)(unsigned long))
 {
 	unsigned long		size;
 	unsigned int		msg_len;

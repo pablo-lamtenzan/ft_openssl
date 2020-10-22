@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:19:15 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/21 16:24:14 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 18:44:44 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ const char*             sll_md5(const char* data)
     const unsigned int  size = ft_strlen(data);
     
 	md5 = (t_ssl_md5) {.buff[A]=RVECT_A, .buff[B]=RVECT_B, .buff[C]=RVECT_C, .buff[D]=RVECT_D};
-	if (!(message = ft_calloc(sizeof(char) * (size + CHUNK_BYTE_SIZE))) \
-		|| !(digest = ft_calloc(sizeof(md5.buff))))
+	if (!(message = ft_calloc(sizeof(char) , size + CHUNK_BYTE_SIZE)) \
+		|| !(digest = ft_calloc(sizeof(unsigned int), 4)))
 		return ((void*)0);
 	ft_strlcpy(message, data, size);
     md5.bytes = append_padding(&message, size);
@@ -98,5 +98,5 @@ const char*             sll_md5(const char* data)
 	sll_md5_crypt(&md5, message);
 	ft_memcpy(digest, md5.buff, sizeof(md5.buff));
 	free(message);
-	return (int_to_str(digest, swap_u32bits));
+	return (long_to_str((unsigned long*)digest, swap_u32bits));
 }

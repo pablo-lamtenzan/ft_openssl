@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 22:20:28 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/20 18:54:47 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 18:31:29 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,19 @@ typedef struct                  s_parse
     char*                       pipe_data;
     char**                      files;
     const char*                 (*algorithm)(const char*);
+    int                         (*hash_and_print)(struct s_parse* parse);
 }                               t_parse;
 
 typedef struct					s_algorithms
 {
     char*						name;
     const char*			        (*algorithm)(const char*);
+    bool                        (*parse)(t_parse*, int, char**, t_algorithms*);
+    int                         (*hash_and_print)(t_parse* parse);
+    {
+        /* data */
+    };
+    )
 }								 t_algorithms;
 
 /*
@@ -52,12 +59,14 @@ typedef struct					s_algorithms
 */
 bool			                read_standart(t_parse* parse, int ac, char** av);
 bool			                read_from_pipe(t_parse* parse);
+bool			                parse_message_digest(t_parse* parse, int ac, char** av, t_algorithms* algorithm);
 bool				            get_data_from_fd(int fd, char **data);
 const char*			            get_data_from_file(const char* filename);
 t_algorithms                	get_algorithm(size_t index);
 char**			                parse_files(int index, int ac, char** av);
 int				                parse_flags(t_parse** parse, int ac, char** av);
-int                             hash_and_print(t_parse* parse);
+int                             hash_and_print_digest(t_parse* parse);
+char*                           reverse(const char* hash);
 void                            clear_all(t_parse* parse);
 
 /*

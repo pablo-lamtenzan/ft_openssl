@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 21:19:52 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/21 19:57:57 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 18:47:52 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,12 @@ static void				cp_array_u32bits(unsigned int* dest, unsigned int* src)
 static void				sll_sha256_crypt(t_ssl_sha256* sha256, unsigned int* data)
 {
 	const unsigned int	chunks_nb = sha256->bits / CHUNK_BIT_SIZE;
-	unsigned int*		tmp;
+	unsigned int*		tmp[64];
 	int					chunk_index;
 	int					update_index;
 
 	chunk_index = -1;
-	if (!(tmp = ft_calloc(sizeof(unsigned int), 64)))
-		return ; // this isn't secure
+	ft_bzero(tmp, 64 * sizeof(unsigned int));
 	while (++chunk_index < chunks_nb && (update_index = -1))
 	{
 		ft_memcpy(sha256->algo_buff, sha256->buff, sizeof(sha256->algo_buff));
@@ -78,7 +77,6 @@ static void				sll_sha256_crypt(t_ssl_sha256* sha256, unsigned int* data)
 		while (++update_index < 8)
 			sha256->buff[update_index] += sha256->algo_buff[update_index];
 	}
-	free(tmp);
 }
 
 const char*				sll_sha256(const char *data)
@@ -95,8 +93,8 @@ const char*				sll_sha256(const char *data)
 	sha256 = (t_ssl_sha256){.buff[A] = RVEC_A, .buff[B] = RVEC_B, \
 		.buff[C] = RVEC_C, .buff[D] = RVEC_D, .buff[E] = RVEC_E, \
 		.buff[F] = RVEC_F, .buff[G] = RVEC_G, .buff[H] = RVEC_H};
-	if (!(message = ft_calloc(1, bytes)) \
-		|| !(digest = ft_calloc(1, sizeof(sha256.buff))))
+	if (!(message = ft_calloc(sizeof(char), bytes)) \
+		|| !(digest = ft_calloc(sizeof(unsigned int), 8)))
 		return ((void*)0);
 	ft_strlcpy(message, data, size);
 	sha256.bytes = append_padding_shaXXX((unsigned int*)message, size, \
@@ -105,5 +103,5 @@ const char*				sll_sha256(const char *data)
 	sll_sha256_crypt(&sha256, message);
 	ft_memcpy(digest, sha256.buff, sizeof(sha256.buff));
 	free(message);
-	return (int_to_str(digest, swap_u64bits));
+	return (long_to_str((unsigned long*)digest, swap_u64bits));
 }

@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 22:02:00 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/20 20:47:32 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 18:29:01 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void print_hash(const char* hash, bool rev_mode, bool endline)
     free(hash);
 }
 
-int         hash_and_print(t_parse* parse)
+int         hash_and_print_digest(t_parse* parse)
 {
     size_t  index;
 

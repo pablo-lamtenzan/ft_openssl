@@ -6,11 +6,12 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 17:44:39 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/19 23:14:52 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 18:36:02 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_sll.h>
+#include <ft.h>
 
 static bool		parse_string_input(t_parse* parse, char* string_input)
 {
@@ -37,10 +38,10 @@ int				parse_flags(t_parse** parse, int ac, char** av)
 		if ((*parse)->flags & STRING_INPUT && !(*parse)->string_input)
 			parse_string_input(*parse, av[curr_arg++]);
         while (++index < 4)
-            if (!strncmp(av[curr_arg], flags[index], 2))
+            if (!ft_strncmp(av[curr_arg], flags[index], 2))
                 (*parse)->flags |= (1 << index);
 		if ((*parse)->flags & PRINT_INPUT && !(*parse)->input_to_print)
-			get_data_from_stdin(&(*parse)->input_to_print);
+			get_data_from_fd(STDIN_FILENO, &(*parse)->input_to_print);
     }
     return (curr_arg == ac ? false : curr_arg);
 }
@@ -62,4 +63,16 @@ char**			parse_files(int index, int ac, char** av)
 	}
 	files[size - index - 1] = 0;
 	return (files);
+}
+
+bool			parse_message_digest(t_parse* parse, int ac, char** av, t_algorithms* algorithm)
+{
+	int			files_pos;
+
+	if (!(files_pos = parse_flags(&parse, ac, av)) \
+			|| get_data_from_fd(&parse->pipe_data, STDIN_FILENO))
+		return (false);
+	parse->files = parse_files(files_pos, ac, av);
+	parse->algorithm = algorithm->algorithm;
+	return (true);
 }

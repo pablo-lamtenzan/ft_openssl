@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 18:03:59 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/21 19:39:06 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 18:39:22 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-const char*         int_to_str(unsigned int* digest, unsigned int (*litle_endian)(unsigned int))
+const char*         long_to_str(unsigned long* digest, unsigned long (*litle_endian)(unsigned long))
 {
     char*           result;
     char*           tmp;
@@ -41,8 +41,11 @@ const char*         int_to_str(unsigned int* digest, unsigned int (*litle_endian
     return (result);
 }
 
-unsigned int        swap_u32bits(unsigned int target)
+unsigned long        swap_u32bits(unsigned long aux)
 {
+    unsigned int target;
+
+    target = (unsigned int)aux;
     return (((target & 0xff) << 24) | ((target & 0xff00) << 8) \
             | ((target & 0xff0000) >> 8) | ((target & 0xff000000) >> 24));
 }

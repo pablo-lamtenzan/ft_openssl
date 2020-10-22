@@ -6,11 +6,21 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 20:48:30 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/20 21:05:22 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 18:14:35 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft.h>
+
+size_t 		ft_strlen(const char* str)
+{
+    char*	start;
+	
+	start = str;
+	while (*str)
+		str++;
+	return (str - start);
+}
 
 char*   ft_uitoa_base(unsigned int nb, int base, char letter)
 {
@@ -56,3 +66,30 @@ char*   ft_uitoa_base_len(unsigned int nb, int base, char letter, unsigned long 
     }
     return (result);
 }
+
+char	*ft_strdup(const char *src)
+{
+	char		*s;
+	int			src_size;
+	int			i;
+	char		*copy;
+	char		*start;
+
+	i = 0;
+	src_size = 0;
+	s = (char *)src;
+	while (src[src_size])
+		src_size++;
+	copy = malloc(sizeof(char) * (src_size + 1));
+	if (copy == NULL)
+		return (NULL);
+	start = copy;
+	while (s[i])
+	{
+		copy[i] = s[i];
+		i++;
+	}
+	start[i] = '\0';
+	return (start);
+}
+

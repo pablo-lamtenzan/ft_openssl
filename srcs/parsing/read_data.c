@@ -6,11 +6,12 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:22:28 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/20 18:48:44 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 18:50:13 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_sll.h>
+#include <ft.h>
 
 const char*			get_data_from_file(const char* filename)
 {
@@ -39,8 +40,8 @@ bool				get_data_from_fd(int path, char **data)
 	{
 		if (!(aux = malloc(sizeof(char) * (size + bytes_read + 1))))
 			return (false);
-		ft_strncpy(aux, *data, size);
-		ft_strncpy(aux + size, buffer, bytes_read);
+		ft_strlcpy(aux, *data, size);
+		ft_strlcpy(aux + size, buffer, bytes_read);
 		size += bytes_read;
 		aux[size] = 0;
 		free(*data);
@@ -66,12 +67,13 @@ bool			    read_from_pipe(t_parse* parse)
                     && get_data_from_fd(&parse->pipe_data, STDIN_FILENO))
 			{
 				parse->algorithm = algorithm.algorithm;
+				parse->hash_and_print = algorithm.hash_and_print;
 				free(name);
 				return (0);
 			}
 			free(name);
         }
-		print_error(name);
+		//print_error(name);
 		return (1);
     }
     return (1);
@@ -80,20 +82,16 @@ bool			    read_from_pipe(t_parse* parse)
 bool			    read_standart(t_parse* parse, int ac, char** av)
 {
 	size_t			index;
-	int				files_pos;
 	t_algorithms	algorithm;
+	char			error;
 
 	index = 0;
+	error = 0;
 	while (index < TOTAL_ALGORITHMS)
-	{
-		if (!ft_strncmp((algorithm = get_algorithm(index)).name, av[1], ft_strlen(av[1])) \
-				&& (files_pos = parse_flags(&parse, ac, av))
-				&& get_data_from_fd(&parse->pipe_data, STDIN_FILENO))
-		{
-			parse->files = parse_files(files_pos, ac, av);
-			parse->algorithm = algorithm.algorithm;
-			return (0);
-		}
-	}
-	print_error(av[1]);
+		if (!ft_strncmp((algorithm = get_algorithm(index)).name, av[1], ft_strlen(av[1])))
+			error = algorithm.parse(parse, ac, av, &algorithm);
+	//if (error) // use the error for bitwise if is necesarry
+	//	print_error(av[1]);
+	parse->hash_and_print = algorithm.hash_and_print;
+	return (true);
 }

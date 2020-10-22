@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 16:31:20 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/21 20:09:47 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 18:49:10 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,12 @@ static void				cp_array_u64bits(unsigned long* dest, unsigned long* src)
 static void				sll_sha512_crypt(t_ssl_sha512* sha512, unsigned char* data)
 {
 	const unsigned int	chunks_nb = sha512->bits / CHUNK_BIT_SIZE;
-	unsigned long*		tmp;
+	unsigned long*		tmp[80];
 	int					chunk_index;
 	int					update_index;
 
 	chunk_index = -1;
-	if (!(tmp = ft_calloc(sizeof(unsigned long), 80)))
-		return ; // this isn't secure
+	ft_bzero(tmp, 80 * sizeof(unsigned long));
 	while (++chunk_index < chunks_nb && (update_index = -1))
 	{
 		ft_memcpy(sha512->algo_buff, sha512->buff, sizeof(sha512->algo_buff));
@@ -105,5 +104,5 @@ const char*				sll_sha512(const char *data)
 	sll_sha256_crypt(&sha512, message);
 	ft_memcpy(digest, sha512.buff, sizeof(sha512.buff));
 	free(message);
-	return (int_to_str(digest, swap_u64bits));
+	return (long_to_str(digest, swap_u64bits));
 }

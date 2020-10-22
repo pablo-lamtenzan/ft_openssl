@@ -6,20 +6,66 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 22:38:18 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/20 18:58:28 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 18:32:44 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+// to do before compilation
+// ft_memcpy
+// print errors ?
+
 #include <ft_sll.h>
+#include <ft.h>
+
+void                        swap_range(char *a, char *b, bool range)
+{
+    char                    aux[4];
+    int                     i;
+
+    ft_bzero(aux, sizeof(char) * 4);
+    i = -1;
+    while (++i < range)
+        aux[i] = *(a + i);
+    i = -1;
+    while (++i < range)
+        *(a + i) = *(b + i);
+    i = -1;
+    while (++i < range)
+        *(b + i) = aux[i];
+}
+
+/* ABCDEFGH -> BADCFEHG -> DCBAHGFE -> HGFEDCBA */
+char*                       reverse(const char* hash)
+{
+    size_t                  start;
+    size_t                  end;
+    size_t                  range;
+
+    end = ft_strlen(hash);
+    range = 1;
+    while (range != end / 2 && !(start = 0))
+    {
+        while (start < end - 1)
+        {
+            swap_range(&hash[start], &hash[start + range], range);
+            start += range * 2;
+        }
+        range *= 2;
+    }
+    return (hash);
+}
 
 t_algorithms                get_algorithm(size_t index)
 {
-    char* todo = "todo"; // to do
     const t_algorithms      algorithm[TOTAL_ALGORITHMS] = {
-        {.algorithm=sll_md5, .name="md5" },
-        {.algorithm=sll_sha256, .name="sha256"},
-        {.algorithm=sll_sha512, .name="sha512"},
-        {.algorithm=sll_wirthlpool, .name="wirthlpool"}
+        {.algorithm=sll_md5, .name="md5" , .parse=parse_message_digest, \
+                .hash_and_print=hash_and_print_digest},
+        {.algorithm=sll_sha256, .name="sha256", .parse=parse_message_digest, \
+                .hash_and_print=hash_and_print_digest},
+        {.algorithm=sll_sha512, .name="sha512", .parse=parse_message_digest, \
+                .hash_and_print=hash_and_print_digest},
+        {.algorithm=sll_wirthlpool, .name="wirthlpool", .parse=parse_message_digest, \
+                .hash_and_print=hash_and_print_digest}
     };
     return (algorithm[index]);
 }
