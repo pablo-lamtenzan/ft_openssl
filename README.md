@@ -1,3 +1,6 @@
-# md5 hash
-
-implementation from scratch of md5 hash in C
+# Re-implementation of opensll encryptation functions:
+## Digest:
+- md5
+- sha256
+- sha512
+- whirthlpool
