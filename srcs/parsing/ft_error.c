@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clear_all.c                                        :+:      :+:    :+:   */
+/*   ft_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/19 23:09:54 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/24 03:25:58 by pablo            ###   ########.fr       */
+/*   Created: 2020/10/23 18:45:38 by pablo             #+#    #+#             */
+/*   Updated: 2020/10/23 19:17:56 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ft_ssl.h>
-#include <stdlib.h>
+#include <ft_error.h>
+#include <stdio.h>
 
-void            clear_all(t_parse* parse)
+bool        print_error(void* check, char error_code, char* arg)
 {
-    size_t      index;
+    if (!check)
+    {
+        if (error_code & ERROR_USAGE)
+            printf("%s", MSG_USAGE);
+        if (error_code & ERROR_ALGONAME)
+            printf(MSG_ALGONAME, arg);
 
-	index = 0;
-    free(parse->input_to_print);
-    //free(parse->pipe_data);
-    free(parse->string_input);
-    while (parse->files && parse->files[index])
-		free(parse->files[index++]);
-	free(parse->files);
+        return (false);
+    }
+    return (true);
 }

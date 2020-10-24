@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 22:02:00 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 19:45:30 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/24 04:20:15 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int         hash_and_print_digest(t_parse* parse)
     if (parse->flags & PRINT_INPUT)
         printf("%s\n", parse->input_to_print);
     // not sure (not well explained in the subject) if i must print the stdin if i only have the "-s" flag. I SUPOSSE NO.
-    if (parse->pipe_data && (parse->flags & PRINT_INPUT || (!parse->files && parse->flags & STRING_INPUT)))
+    if (parse->pipe_data && (parse->flags & PRINT_INPUT || (!parse->files && parse->flags & STRING_INPUT) || !parse->flags))
         print_hash(parse->algorithm(parse->pipe_data), parse->flags & REV_OUTPUT, true);
     if (parse->flags & STRING_INPUT && !(parse->flags & QUIET_MODE))
         printf(MD5_STRING, parse->string_input);

@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 20:51:21 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 20:58:37 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/23 20:27:09 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include <stdlib.h>
 
-char*       ft_uitoa_base_len(unsigned int nb, int base, char letter,
+char*       ft_uitoa_base_len(unsigned long nb, int base, char letter,
         unsigned long len);
 size_t 	    ft_strlen(const char* str);
 int			get_next_line(const int fd, char **line);

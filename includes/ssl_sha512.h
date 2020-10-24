@@ -6,12 +6,12 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 16:31:35 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 19:19:37 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 21:28:06 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SSL_SHA512_H
-# define SL_SHA512_H
+# define SSL_SHA512_H
 
 #include <limits.h>
 

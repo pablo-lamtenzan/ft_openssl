@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 22:38:18 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 21:00:41 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/22 21:28:38 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ char*                       reverse(char* hash)
 t_algorithms                get_algorithm(size_t index)
 {
     const t_algorithms      algorithm[TOTAL_ALGORITHMS] = {
-        {.algorithm=sll_md5, .name="md5" , .parse=parse_message_digest, \
+        {.algorithm=ssl_md5, .name="md5" , .parse=parse_message_digest, \
                 .hash_and_print=hash_and_print_digest},
-        {.algorithm=sll_sha256, .name="sha256", .parse=parse_message_digest, \
+        {.algorithm=ssl_sha256, .name="sha256", .parse=parse_message_digest, \
                 .hash_and_print=hash_and_print_digest},
-        {.algorithm=sll_sha512, .name="sha512", .parse=parse_message_digest, \
+        {.algorithm=ssl_sha512, .name="sha512", .parse=parse_message_digest, \
                 .hash_and_print=hash_and_print_digest},
-        /*{.algorithm=sll_wirthlpool, .name="wirthlpool", .parse=parse_message_digest, \
+        /*{.algorithm=ssl_wirthlpool, .name="wirthlpool", .parse=parse_message_digest, \
                 .hash_and_print=hash_and_print_digest}*/
     };
     return (algorithm[index]);

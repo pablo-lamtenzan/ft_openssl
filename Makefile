@@ -1,76 +1,40 @@
 
-NAME	= ft_ssl
-
-CC		= gcc
-DBG		= valgrind
-RM		= rm
-
-SRCDIR	= srcs
-BLDDIR	= bin
-OBJDIR	= bin
-INCDIR	= includes
-
-CFLAGS	= #-Wall -Wextra -Werror #-g3 -fsanitize=address
-IFLAGS	= -I$(INCDIR)
 
 
-SRCS= $(addprefix $(SRCDIR)/, \
-			$(addprefix parsing/, \
-				read_data.c \
-				parse.c \
-				hash_and_print.c \
-				clear_all.c \
-				aux.c) \
-			$(addprefix algorithms/, \
-				ssl_md5.c \
-				ssl_md5_fill.c \
-				ssl_sha256.c \
-				ssl_sha512.c \
-				utils.c) \
-			$(addprefix ft/, \
-				ft.c \
-				ft1.c \
-				get_next_line.c \
-				get_next_line_utils.c \
-				) \
-			$(addprefix main/, \
-				main.c) \
-	)
+NAME=ft_openssl
+CFLAGS= -Wall -Wextra -Werror -g3 -fsanitize=address
 
-OBJS	= $(patsubst $(SRCS)/%.c, $(OBJDIR)/%.o, $(SRCS))
-OBJDS	= $(addprefix $(OBJDIR)/, algorithms ft main parsing)
+SRCDIR = srcs
+ALGO=  ssl_md5_fill.c ssl_md5.c ssl_sha256.c ssl_sha512.c utils.c
+FT= ft.c ft1.c get_next_line.c get_next_line_utils.c
+PARSING= aux.c clear_all.c hash_and_print.c parse.c read_data.c ft_error.c
 
-HDRS	= $(addprefix $(INCDIR)/, ft_ssl.h ft.h algorithms.h get_next_line.h \
-		sll_md5.h ssl_sha256.h ssl_sha512.h)
+SRCS= main/main.c $(addprefix algorithms/, $(ALGO)) \
+					$(addprefix ft/, $(FT)) \
+					$(addprefix parsing/, $(PARSING))
+			
+OBJDIR=bin
+OBJS= $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
 
-all:		$(NAME)
 
-$(OBJDS):
-	@echo MK $@
-	mkdir -p $@
+all: $(NAME)
+	@echo Done.
 
-$(NAME):		$(OBJDS) $(OBJS)
-	@echo LINK $(NAME)
-	$(CC) -o $(NAME) $(CFLAGS) $(IFLAGS) $(OBJS)
+$(NAME) : $(OBJDIR) $(OBJS)
+	gcc -o $(NAME) $(CFLAGS) $(OBJS)
 
 $(OBJDIR):
-	@echo MK $@
-	@mkdir -p $@
+	mkdir -p $@
 
-$(OBJDIR)/%.o:	$(SRCDIR)/%.c $(HDRS) Makefile
-	@echo CC $<
-	$(CC) $(CFLAGS) $(IFLAGS) -c -o $@ $<
+$(OBJDIR)/%.o : srcs/%.c
+	mkdir -p $(shell dirname $@)
+	gcc -c -o $@  -I./includes $<
 
 clean:
-	@echo RM $(OBJDIR)
-	@$(RM) -rf $(OBJDIR)
+	rm -rf $(OBJDIR)
 
-fclean:			clean
-	@echo RM $(NAME)
-	@$(RM) -f $(NAME)
+fclean: clean
+	rm -rf $(NAME)
 
-re:				fclean all
+re: fclean all
 
-.PHONY: clean fclean all
-
-$(VERBOSE).SILENT:

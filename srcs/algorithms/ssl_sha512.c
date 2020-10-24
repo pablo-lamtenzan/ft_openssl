@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 16:31:20 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 19:35:12 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/23 20:29:07 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <algorithms.h>
 #include <ft.h>
 
-static void				sll_sha512_crypt_message(unsigned long* vectors, unsigned long* chunks)
+static void				ssl_sha512_crypt_message(unsigned long* vectors, unsigned long* chunks)
 {
 	unsigned long		tmps[6];
 	unsigned int		iterator;
@@ -60,7 +60,7 @@ static void				cp_array_u64bits(unsigned long* dest, unsigned long* src)
 	}
 }
 
-static void				sll_sha512_crypt(t_ssl_sha512* sha512, unsigned char* data)
+static void				ssl_sha512_crypt(t_ssl_sha512* sha512, unsigned char* data)
 {
 	const unsigned int	chunks_nb = sha512->bits / CHUNK_BIT_SIZE;
 	unsigned long		tmp[80];
@@ -73,7 +73,7 @@ static void				sll_sha512_crypt(t_ssl_sha512* sha512, unsigned char* data)
 	{
 		ft_memcpy(sha512->algo_buff, sha512->buff, sizeof(sha512->algo_buff));
 		cp_array_u64bits(tmp, (unsigned long *)(data + chunk_index * CHUNK_BYTE_SIZE));
-		sll_sha512_crypt_message(sha512->algo_buff, tmp);
+		ssl_sha512_crypt_message(sha512->algo_buff, tmp);
 		while (++update_index < 8)
 			sha512->buff[update_index] += sha512->algo_buff[update_index];
 	}
@@ -100,7 +100,7 @@ int				append_padding_sha_u64(unsigned long* message, unsigned int message_size)
 	return (chunks_nb * CHUNK_BYTE_SIZE);
 }
 
-const char*				sll_sha512(const char *data)
+const char*				ssl_sha512(const char *data)
 {
 	t_ssl_sha512		sha512;
 	char*				message;
@@ -120,8 +120,8 @@ const char*				sll_sha512(const char *data)
 	ft_strlcpy(message, data, size);
 	sha512.bytes = append_padding_sha_u64((unsigned long*)message, size);
 	sha512.bits = sha512.bytes * CHAR_BIT;
-	sll_sha512_crypt(&sha512, message);
+	ssl_sha512_crypt(&sha512, message);
 	ft_memcpy(digest, sha512.buff, sizeof(sha512.buff));
 	free(message);
-	return (long_to_str(digest, swap_u64bits));
+	return (long_to_str_u64(digest, swap_u64bits));
 }

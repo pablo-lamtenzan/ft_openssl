@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 18:03:59 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 18:39:22 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/23 20:50:04 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-const char*         long_to_str(unsigned long* digest, unsigned long (*litle_endian)(unsigned long))
+#include <stdio.h>
+
+const char*         long_to_str_u64(unsigned long* digest, unsigned long (*litle_endian)(unsigned long))
 {
     char*           result;
     char*           tmp;
@@ -27,12 +29,12 @@ const char*         long_to_str(unsigned long* digest, unsigned long (*litle_end
     i = 0;
     while (digest[size++])
         ;
-    if (!(result = malloc(sizeof(char) * size)))
+    if (!(result = malloc(sizeof(char) * size * CHAR_BIT)))
         return (NULL);
     while (i < size)
     {
         digest[i] = litle_endian ? litle_endian(digest[i]) : digest[i];
-        if (!(tmp = ft_uitoa_base_len(digest[i], 16, 'a', 8)))
+        if (!(tmp = ft_uitoa_base_len(digest[i], 16, 'a', 8))) // to change 
             return (NULL);
         ft_strlcpy(result + (i++ * CHAR_BIT), tmp, 8);
         free(tmp);
@@ -41,11 +43,28 @@ const char*         long_to_str(unsigned long* digest, unsigned long (*litle_end
     return (result);
 }
 
-unsigned long        swap_u32bits(unsigned long aux)
+const char*         int_to_str_u32(unsigned int* digest, unsigned int (*litle_endian)(unsigned int))
 {
-    unsigned int target;
+    char*           result;
+    char*           tmp;
+    unsigned int    i;
 
-    target = (unsigned int)aux;
+    i = 0;
+    if (!(result = malloc(sizeof(char) * 4 * CHAR_BIT)))
+        return (NULL);
+    while (i < 4)
+    {
+        digest[i] = litle_endian ? litle_endian(digest[i]) : digest[i];
+        if (!(tmp = ft_uitoa_base_len(digest[i], 16, 'a', 8)))
+            return (NULL);
+        ft_strlcpy(result + (i++ * CHAR_BIT), tmp, 8);
+        free(tmp);
+    }
+    return (result);
+}
+
+unsigned int        swap_u32bits(unsigned int target)
+{
     return (((target & 0xff) << 24) | ((target & 0xff00) << 8) \
             | ((target & 0xff0000) >> 8) | ((target & 0xff000000) >> 24));
 }

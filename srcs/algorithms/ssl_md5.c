@@ -6,13 +6,15 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:19:15 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 21:03:11 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/23 20:46:07 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ssl_md5.h>
 #include <algorithms.h>
 #include <ft.h>
+
+#include <stdio.h>
 
 /*
     Each message has 512 bytes lenght (32 bytes * 16 words).
@@ -21,7 +23,7 @@
     where i is the iterator, k is the chunk index and s a left retation function.
 */
 
-static void             sll_md5_crypt_message(unsigned int* vectors,
+static void             ssl_md5_crypt_message(unsigned int* vectors,
         unsigned int* chunks)
 {
     unsigned int        crypt;
@@ -47,7 +49,7 @@ static void             sll_md5_crypt_message(unsigned int* vectors,
     }
 }
 
-static void             sll_md5_crypt(t_ssl_md5* md5, unsigned char* data)
+static void             ssl_md5_crypt(t_ssl_md5* md5, unsigned char* data)
 {
     const unsigned int  chunks_nb = md5->bits / CHUNK_BIT_SIZE;
     int                 chunk_index;
@@ -56,7 +58,7 @@ static void             sll_md5_crypt(t_ssl_md5* md5, unsigned char* data)
     while (++chunk_index < chunks_nb)
     {
         ft_memcpy(md5->algo_buff, md5->buff, sizeof(md5->algo_buff));
-        sll_md5_crypt_message(md5->algo_buff, (unsigned int*)(data + chunk_index * CHUNK_BYTE_SIZE));
+        ssl_md5_crypt_message(md5->algo_buff, (unsigned int*)(data + chunk_index * CHUNK_BYTE_SIZE));
         md5->buff[A] += md5->algo_buff[A];
         md5->buff[B] += md5->algo_buff[B];
         md5->buff[C] += md5->algo_buff[C];
@@ -76,27 +78,26 @@ static unsigned int     append_padding(char** message, unsigned int message_size
         ;
     msg_len = size;
     size /= CHAR_BIT;
-    *message[size] = 1;
-    ft_memcpy(*message + size, &msg_len, 4);
+    (*message)[size] = 1;
+    ft_memcpy((*message) + size, &msg_len, 4);
     return (size + 8);
 }
 
-const char*             sll_md5(const char* data)
+const char*             ssl_md5(const char* data)
 {
     t_ssl_md5           md5;
 	char*				message;
-	unsigned int*		digest;
     const unsigned int  size = ft_strlen(data);
     
 	md5 = (t_ssl_md5) {.buff[A]=RVECT_A, .buff[B]=RVECT_B, .buff[C]=RVECT_C, .buff[D]=RVECT_D};
-	if (!(message = ft_calloc(sizeof(char) , size + CHUNK_BYTE_SIZE)) \
-		|| !(digest = ft_calloc(sizeof(unsigned int), 4)))
+	if (!(message = ft_calloc(size + CHUNK_BYTE_SIZE, sizeof(char))))
 		return ((void*)0);
-	ft_strlcpy(message, data, size);
+	ft_memcpy(message, data, size);
     md5.bytes = append_padding(&message, size);
     md5.bits = md5.bytes * CHAR_BIT;
-	sll_md5_crypt(&md5, message);
-	ft_memcpy(digest, md5.buff, sizeof(md5.buff));
+	ssl_md5_crypt(&md5, message);
+    /*for (int i = 0 ; i < 4; i++)
+        printf("%u\n", digest[i]); */
 	free(message);
-	return (long_to_str((unsigned long*)digest, swap_u32bits));
+	return (int_to_str_u32(md5.buff, swap_u32bits));
 }

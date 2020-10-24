@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 20:48:30 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 19:25:50 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/23 20:39:31 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ size_t 		ft_strlen(const char* str)
 	return (it - str);
 }
 
-char*   ft_uitoa_base(unsigned int nb, int base, char letter)
+char*   ft_uitoa_base(unsigned long nb, int base, char letter)
 {
-    unsigned int    tmp;
+    unsigned long   tmp;
     int             lenght;
     char*           result;
 
@@ -32,7 +32,7 @@ char*   ft_uitoa_base(unsigned int nb, int base, char letter)
     lenght = 1;
     while (tmp /= base)
         ++lenght;
-    if (!(result = malloc(sizeof(char) * lenght)))
+    if (!(result = ft_calloc(lenght, sizeof(char))))
         return (NULL);
     while (lenght--)
     {
@@ -45,7 +45,9 @@ char*   ft_uitoa_base(unsigned int nb, int base, char letter)
     return (result);
 }
 
-char*   ft_uitoa_base_len(unsigned int nb, int base, char letter, unsigned long len)
+
+#include <stdio.h>
+char*   ft_uitoa_base_len(unsigned long nb, int base, char letter, unsigned long len)
 {
     int     i;
     int     diff;
@@ -56,7 +58,7 @@ char*   ft_uitoa_base_len(unsigned int nb, int base, char letter, unsigned long 
     result = ft_uitoa_base(nb, base, letter);
     if (result && (diff = len - ft_strlen(result)) > 0)
     {
-        if (!(tmp = ft_calloc(1, len)))
+        if (!(tmp = ft_calloc(len, sizeof(char))))
             return (NULL);
         while (i++ < diff)
             ;

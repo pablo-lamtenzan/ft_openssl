@@ -6,15 +6,15 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 21:19:52 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 19:33:19 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/23 20:29:31 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sll_sha256.h>
+#include <ssl_sha256.h>
 #include <algorithms.h>
 #include <ft.h>
 
-static void				sll_sha256_crypt_message(unsigned int* vectors, unsigned int* chunks)
+static void				ssl_sha256_crypt_message(unsigned int* vectors, unsigned int* chunks)
 {
 	unsigned int		tmps[6];
 	unsigned int		iterator;
@@ -60,7 +60,7 @@ static void				cp_array_u32bits(unsigned int* dest, unsigned int* src)
 	}
 }
 
-static void				sll_sha256_crypt(t_ssl_sha256* sha256, unsigned int* data)
+static void				ssl_sha256_crypt(t_ssl_sha256* sha256, unsigned int* data)
 {
 	const unsigned int	chunks_nb = sha256->bits / CHUNK_BIT_SIZE;
 	unsigned int		tmp[64];
@@ -73,7 +73,7 @@ static void				sll_sha256_crypt(t_ssl_sha256* sha256, unsigned int* data)
 	{
 		ft_memcpy(sha256->algo_buff, sha256->buff, sizeof(sha256->algo_buff));
 		cp_array_u32bits(tmp, data + chunk_index * 16);
-		sll_sha256_crypt_message(sha256->algo_buff, tmp);
+		ssl_sha256_crypt_message(sha256->algo_buff, tmp);
 		while (++update_index < 8)
 			sha256->buff[update_index] += sha256->algo_buff[update_index];
 	}
@@ -100,7 +100,7 @@ int				append_padding_sha_u32(unsigned int* message, unsigned int message_size)
 	return (chunks_nb * CHUNK_BYTE_SIZE);
 }
 
-const char*				sll_sha256(const char *data)
+const char*				ssl_sha256(const char *data)
 {
 	t_ssl_sha256		sha256;
 	char*				message;
@@ -120,8 +120,8 @@ const char*				sll_sha256(const char *data)
 	ft_strlcpy(message, data, size);
 	sha256.bytes = append_padding_sha_u32((unsigned int*)message, size);
 	sha256.bits = sha256.bytes * CHAR_BIT;
-	sll_sha256_crypt(&sha256, (unsigned int*)message);
+	ssl_sha256_crypt(&sha256, (unsigned int*)message);
 	ft_memcpy(digest, sha256.buff, sizeof(sha256.buff));
 	free(message);
-	return (long_to_str((unsigned long*)digest, swap_u64bits));
+	return (int_to_str_u32(digest, swap_u32bits)); // see this params
 }

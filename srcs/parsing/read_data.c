@@ -6,18 +6,20 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:22:28 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 19:45:43 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/24 04:08:17 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ssl.h>
 #include <ft.h>
+#include <ft_error.h>
 
 const char*			get_data_from_file(const char* filename)
 {
 	char*			data;
 	int				fd;
 
+	printf("GOES HERE\n");
 	if ((fd = open(filename, O_RDONLY)) < 0)
 		return (NULL);
 	if (get_data_from_fd(fd, &data));
@@ -25,7 +27,7 @@ const char*			get_data_from_file(const char* filename)
 	return (NULL);
 }
 
-bool				get_data_from_fd(int fd, char **data)
+bool				get_data_from_fd(int fd, char** data)
 {
 	size_t			size;
 	ssize_t			bytes_read;
@@ -37,7 +39,7 @@ bool				get_data_from_fd(int fd, char **data)
 		return (false);
 	**data = 0;
 	size = 0;
-	while ((bytes_read = read(fd, buffer, BUFFER_SIZE)) < 0)
+	while ((bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
 	{
 		if (!(aux = malloc(sizeof(char) * (size + bytes_read + 1))))
 			return (false);
@@ -52,6 +54,7 @@ bool				get_data_from_fd(int fd, char **data)
 	return (true);
 }
 
+// do at the and
 bool			    read_from_pipe(t_parse* parse)
 {
     char*           name;
@@ -64,35 +67,32 @@ bool			    read_from_pipe(t_parse* parse)
     {
         while (index < TOTAL_ALGORITHMS)
         {
-            if (!ft_strncmp((algorithm = get_algorithm(index++)).name, name, ft_strlen(name)) \
+            if (!ft_strncmp((algorithm = get_algorithm(index)).name, name, ft_strlen(name)) \
                     && get_data_from_fd(STDIN_FILENO, &parse->pipe_data))
 			{
 				parse->algorithm = algorithm.algorithm;
 				parse->hash_and_print = algorithm.hash_and_print;
 				free(name);
+				name = NULL;
 				return (0);
 			}
-			free(name);
+			print_error((void*)name, ERROR_ALGONAME, name);
+			index++;
         }
-		//print_error(name);
-		return (1);
+		free(name);
     }
-    return (1);
+    return (print_error((void* )parse->hash_and_print, ERROR_USAGE, NULL));
 }
 
 bool			    read_standart(t_parse* parse, int ac, char** av)
 {
 	size_t			index;
 	t_algorithms	algorithm;
-	char			error;
 
 	index = 0;
-	error = 0;
 	while (index < TOTAL_ALGORITHMS)
-		if (!ft_strncmp((algorithm = get_algorithm(index)).name, av[1], ft_strlen(av[1])))
-			error = algorithm.parse(parse, ac, av, &algorithm);
-	//if (error) // use the error for bitwise if is necesarry
-	//	print_error(av[1]);
-	parse->hash_and_print = algorithm.hash_and_print;
-	return (true);
+		if (!ft_strncmp((algorithm = get_algorithm(index++)).name, av[1], ft_strlen(av[1])))
+			algorithm.parse(&parse, ac, av, &algorithm);
+	parse->hash_and_print = parse->algorithm ? algorithm.hash_and_print : NULL;
+	return (!parse->algorithm && print_error(NULL, ERROR_ALGONAME, av[1]));
 }
