@@ -6,25 +6,24 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 22:13:53 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/24 04:14:06 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/25 05:09:32 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ssl.h>
+#include <ft_error.h>
 
-// stat + change dir before open == bug (raise condition)
-// to fix its open, store, fstat + read, close
-// TOCTOU
+// -r segfault
 
 int         main(int ac, char** av)
 {
 	t_parse	parse;
 
-	parse = (t_parse){.flags=0, .input_to_print=NULL, .pipe_data=NULL, \
-			.string_input=NULL, .files=NULL,.algorithm=NULL, .hash_and_print=NULL};
+	parse = (t_parse){.flags=0, .pipe_data=NULL, \
+			.string_input=NULL, .files_fds=NULL, .filenames=NULL, .algorithm=NULL, .hash_and_print=NULL};
 
-    if (ac == 1) // Usage if stdin is empty
-        read_from_pipe(&parse);
+    if (ac == 1)
+		return (print_error(NULL, ERROR_USAGE, NULL));
 	else
     	read_standart(&parse, ac, av);
 	return (parse.hash_and_print ? parse.hash_and_print(&parse) : 0);

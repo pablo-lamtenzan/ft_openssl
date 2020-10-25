@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:09:54 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/24 03:25:58 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/25 03:11:08 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@ void            clear_all(t_parse* parse)
     size_t      index;
 
 	index = 0;
-    free(parse->input_to_print);
-    //free(parse->pipe_data);
-    free(parse->string_input);
-    while (parse->files && parse->files[index])
-		free(parse->files[index++]);
-	free(parse->files);
+    free(parse->pipe_data);
+    //while (parse->filenames && parse->filenames[index])
+	//	free(parse->filenames[index++]);
+	free(parse->files_fds);
+    free(parse->filenames);
 }

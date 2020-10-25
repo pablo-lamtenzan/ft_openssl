@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:22:28 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/24 04:08:17 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/25 04:19:06 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,17 @@
 #include <ft.h>
 #include <ft_error.h>
 
-const char*			get_data_from_file(const char* filename)
+char*				get_data_from_file(int fd, char* filename, char flags)
 {
 	char*			data;
-	int				fd;
 
-	printf("GOES HERE\n");
-	if ((fd = open(filename, O_RDONLY)) < 0)
-		return (NULL);
+	if (fd < 0)
+	{
+		if (!(flags & QUIET_MODE))
+			return ((void *)print_error(NULL, ERROR_FILENF, filename));
+		else
+			return (NULL);
+	}
 	if (get_data_from_fd(fd, &data));
 		return (data);
 	return (NULL);
@@ -37,7 +40,7 @@ bool				get_data_from_fd(int fd, char** data)
 	if (!(buffer = malloc(sizeof(char) * BUFFER_SIZE))
 			|| !(*data = ft_calloc(1, 1)))
 		return (false);
-	**data = 0;
+	//**data = 0;
 	size = 0;
 	while ((bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
 	{

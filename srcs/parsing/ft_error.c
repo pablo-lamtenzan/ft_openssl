@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 18:45:38 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/23 19:17:56 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/25 05:04:14 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ bool        print_error(void* check, char error_code, char* arg)
             printf("%s", MSG_USAGE);
         if (error_code & ERROR_ALGONAME)
             printf(MSG_ALGONAME, arg);
-
+        if (error_code & ERROR_FILENF)
+            printf(MSG_FILENF, arg);
+        if (error_code & ERROR_STRING)
+            printf("%s", MSG_STRING);
         return (false);
     }
     return (true);

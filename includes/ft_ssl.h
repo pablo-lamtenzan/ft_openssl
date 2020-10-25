@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 22:20:28 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/23 19:21:59 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/25 03:12:22 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ typedef struct                  s_parse
     char*                       string_input;
     char*                       input_to_print;
     char*                       pipe_data;
-    char**                      files;
+    int*                        files_fds;
+    char**                      filenames;
     const char*                 (*algorithm)(const char*);
     int                         (*hash_and_print)(struct s_parse* parse);
 }                               t_parse;
@@ -57,9 +58,9 @@ bool			                read_standart(t_parse* parse, int ac, char** av);
 bool			                read_from_pipe(t_parse* parse);
 bool			                parse_message_digest(t_parse** parse, int ac, char** av, t_algorithms* algorithm);
 bool				            get_data_from_fd(int fd, char** data);
-const char*			            get_data_from_file(const char* filename);
+char*				            get_data_from_file(int fd, char* filename, char flags);
 t_algorithms                	get_algorithm(size_t index);
-char**			                parse_files(int index, int ac, char** av);
+void			                parse_files(t_parse* parse, int index, int ac, char** av);
 int				                parse_flags(t_parse** parse, int ac, char** av);
 int                             hash_and_print_digest(t_parse* parse);
 char*                           reverse(char* hash);
