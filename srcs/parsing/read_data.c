@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:22:28 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/25 04:19:06 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/25 05:24:50 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char*				get_data_from_file(int fd, char* filename, char flags)
 		else
 			return (NULL);
 	}
-	if (get_data_from_fd(fd, &data));
+	if (get_data_from_fd(fd, &data) && !(close(fd)));
 		return (data);
 	return (NULL);
 }
