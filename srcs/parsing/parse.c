@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 17:44:39 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/25 05:11:27 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/26 04:40:26 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,6 @@
 #include <ft_error.h>
 
 #include <string.h>
-
-/*
-static bool		parse_string_input(t_parse* parse, char* string_input)
-{
-	const size_t size = ft_strlen(string_input);
-
-	if (parse->string_input || !(parse->string_input = malloc(sizeof(char) * size)))
-		return (false);
-	printf("src is :%s\n", string_input);
-	ft_strlcpy(parse->string_input, string_input, size);
-	printf("dest is:%s\n", parse->string_input);
-	return (true);
-}
-*/
 
 int				parse_flags(t_parse** parse, int ac, char** av)
 {
@@ -46,19 +32,7 @@ int				parse_flags(t_parse** parse, int ac, char** av)
 		find = false;
         index = -1;
 		if ((*parse)->flags & STRING_INPUT && !(*parse)->string_input)
-		{
 			(*parse)->string_input = av[curr_arg++];
-			// i can put this or not put anything (i think is better to not put nothing)
-			/*
-			 while (++index < 4)
-            	if (!ft_strncmp((*parse)->string_input, flags[index], 2))
-				{
-					print_error(NULL, ERROR_STRING, NULL);
-					clear_all(*parse);
-					exit(EXIT_FAILURE);
-				}
-			*/
-		}
 		index = -1;
 		if (!av[curr_arg])
 			break ;
@@ -78,7 +52,7 @@ void			parse_files(t_parse* parse, int index, int ac, char** av)
 	if (!(parse->files_fds = malloc(sizeof(int) * size))
 			|| !(parse->filenames = malloc(sizeof(char*) * size)))
 		return ;
-	while (++index - 1 <= ac - 1 && av[index - 1][0] != '-')
+	while (++index - 1 <= ac - 1)
 	{
 		parse->filenames[i] = av[index - 1];
 		parse->files_fds[i++] = open(av[index - 1], O_RDONLY);
@@ -92,7 +66,7 @@ bool			parse_message_digest(t_parse** parse, int ac, char** av, t_algorithms* al
 	int			files_pos;
 
 	files_pos = parse_flags(parse, ac, av);
-	if (av[files_pos] && (files_pos < ac - 1 || ((!(*parse)->flags || (*parse)->flags & PRINT_INPUT) && files_pos < ac)))
+	if (av[files_pos] && (files_pos < ac - 1 || ((!(*parse)->flags || (*parse)->flags & REV_OUTPUT || (*parse)->flags & PRINT_INPUT) && files_pos < ac)))
 		parse_files(*parse, files_pos, ac, av);
 	if (((!(*parse)->files_fds && !((*parse)->flags & STRING_INPUT)) || (((*parse)->files_fds || (*parse)->flags & STRING_INPUT) && (*parse)->flags & PRINT_INPUT)) && !get_data_from_fd(STDIN_FILENO, &(*parse)->pipe_data))
 		return (false);

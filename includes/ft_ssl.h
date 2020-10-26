@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 22:20:28 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/25 03:12:22 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/26 04:25:05 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 #define QUIET_MODE              2
 #define REV_OUTPUT              4
 #define STRING_INPUT            8
+#define FLAGS_ERROR             16
 
 typedef struct                  s_parse
 {
@@ -58,7 +59,7 @@ bool			                read_standart(t_parse* parse, int ac, char** av);
 bool			                read_from_pipe(t_parse* parse);
 bool			                parse_message_digest(t_parse** parse, int ac, char** av, t_algorithms* algorithm);
 bool				            get_data_from_fd(int fd, char** data);
-char*				            get_data_from_file(int fd, char* filename, char flags);
+char*				            get_data_from_file(int fd, char* filename, char* flags);
 t_algorithms                	get_algorithm(size_t index);
 void			                parse_files(t_parse* parse, int index, int ac, char** av);
 int				                parse_flags(t_parse** parse, int ac, char** av);

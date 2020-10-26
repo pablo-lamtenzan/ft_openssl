@@ -6,20 +6,16 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 22:38:18 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 21:28:38 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/26 04:39:55 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// to do before compilation
-// ft_memcpy
-// print errors ?
 
 #include <ft_ssl.h>
 #include <ft.h>
 
-void                        swap_range(char *a, char *b, bool range)
+void                        swap_range(char *a, char *b, int range)
 {
-    char                    aux[4];
+    char                    aux[32];
     int                     i;
 
     ft_bzero(aux, sizeof(char) * 4);
@@ -43,7 +39,7 @@ char*                       reverse(char* hash)
 
     end = ft_strlen(hash);
     range = 1;
-    while (range != end / 2 && !(start = 0))
+    while (range != end && !(start = 0))
     {
         while (start < end - 1)
         {
