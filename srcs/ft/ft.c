@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 20:48:30 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/23 20:39:31 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/25 07:05:02 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char*   ft_uitoa_base(unsigned long nb, int base, char letter)
     lenght = 1;
     while (tmp /= base)
         ++lenght;
-    if (!(result = ft_calloc(lenght, sizeof(char))))
+    if (!(result = ft_calloc(lenght + 1, sizeof(char))))
         return (NULL);
     while (lenght--)
     {
@@ -51,18 +51,18 @@ char*   ft_uitoa_base_len(unsigned long nb, int base, char letter, unsigned long
 {
     int     i;
     int     diff;
-    char*   result;
+    char   *result;
     char*   tmp;
     
     i = 0;
     result = ft_uitoa_base(nb, base, letter);
     if (result && (diff = len - ft_strlen(result)) > 0)
     {
-        if (!(tmp = ft_calloc(len, sizeof(char))))
+        if (!(tmp = ft_calloc(len + 1, sizeof(char))))
             return (NULL);
-        while (i++ < diff)
-            ;
-        ft_strlcpy(tmp + i, result, len - diff);
+        while (i < diff)
+            tmp[i++] = '0';
+        ft_memcpy(tmp + i, result, len - diff);
         free(result);
         result = tmp;
     }

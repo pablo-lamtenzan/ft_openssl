@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:22:28 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/25 05:24:50 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/26 03:18:09 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,24 @@ bool				get_data_from_fd(int fd, char** data)
 {
 	size_t			size;
 	ssize_t			bytes_read;
-	char*			buffer;
+	char			buffer[BUFFER_SIZE];
 	char*			aux;
 
-	if (!(buffer = malloc(sizeof(char) * BUFFER_SIZE))
-			|| !(*data = ft_calloc(1, 1)))
+	if (!(*data = ft_calloc(sizeof(char), 1)))
 		return (false);
-	//**data = 0;
 	size = 0;
-	while ((bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
+	while ((bytes_read = read(fd, &buffer, BUFFER_SIZE)) > 0)
 	{
-		if (!(aux = malloc(sizeof(char) * (size + bytes_read + 1))))
+		if (!(aux = ft_calloc(sizeof(char), (size + bytes_read + 1))))
 			return (false);
-		ft_strlcpy(aux, *data, size);
-		ft_strlcpy(aux + size, buffer, bytes_read);
+		ft_memcpy(aux, *data, size);
+		ft_memcpy(aux + size, buffer, bytes_read);
 		size += bytes_read;
 		aux[size] = 0;
 		free(*data);
 		*data = aux;
+		ft_bzero(&buffer, BUFFER_SIZE);
 	}
-	free(buffer);
 	return (true);
 }
 

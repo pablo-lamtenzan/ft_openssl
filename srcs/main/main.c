@@ -6,14 +6,17 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 22:13:53 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/25 05:09:32 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/26 02:29:58 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ssl.h>
 #include <ft_error.h>
 
+#include <algorithms.h>
+
 // -r segfault
+// check that in shell "echo "test" | openssl"
 
 int         main(int ac, char** av)
 {

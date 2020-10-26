@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 18:03:59 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/23 20:50:04 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/26 02:29:52 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,19 @@ const char*         int_to_str_u32(unsigned int* digest, unsigned int (*litle_en
 {
     char*           result;
     char*           tmp;
-    unsigned int    i;
+    int             i;
 
-    i = 0;
-    if (!(result = malloc(sizeof(char) * 4 * CHAR_BIT)))
+    i = -1;
+    if (!(result = malloc(sizeof(char) * 36)))
         return (NULL);
-    while (i < 4)
+    while (++i < 4)
     {
         digest[i] = litle_endian ? litle_endian(digest[i]) : digest[i];
         if (!(tmp = ft_uitoa_base_len(digest[i], 16, 'a', 8)))
             return (NULL);
-        ft_strlcpy(result + (i++ * CHAR_BIT), tmp, 8);
+        ft_strlcpy(result + (i * 8), tmp, 9);
         free(tmp);
-    }
+    }    
     return (result);
 }
 

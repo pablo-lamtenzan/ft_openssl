@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/02 17:14:33 by plamtenz          #+#    #+#             */
-/*   Updated: 2020/10/22 21:03:01 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/25 20:47:29 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,18 @@ typedef struct                  s_ssl_md5
     unsigned                    bytes;
 }                               t_ssl_md5;
 
-const unsigned g_kernel[64] = {
+typedef struct                   s_operations
+{
+    unsigned int                (*operation)(unsigned int, unsigned int, unsigned int);
+    unsigned int                (*chunk_index)(unsigned int);
+}                               t_operations;
+
+
+/*  Binary integer part of the sines of integers (Radians) as constants
+    for (i = 0; i < 63; i++)
+        g_kernel[i] = floor(pow(2, 32) * abs(sin(i + 1)))
+*/
+const unsigned g_sines[64] = {
     0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee, 0xf57c0faf, 0x4787c62a, 
     0xa8304613, 0xfd469501, 0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
 	0x6b901122, 0xfd987193, 0xa679438e, 0x49b40821, 0xf61e2562, 0xc040b340,
@@ -58,9 +69,13 @@ const unsigned g_shift[64] = {
 	6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21
     };
 
-unsigned                        vec_f(unsigned b, unsigned c, unsigned d);
-unsigned                        vec_g(unsigned b, unsigned c, unsigned d);
-unsigned                        vec_h(unsigned b, unsigned c, unsigned d);
-unsigned                        vec_i(unsigned b, unsigned c, unsigned d);
+unsigned                        f(unsigned b, unsigned c, unsigned d);
+unsigned                        g(unsigned b, unsigned c, unsigned d);
+unsigned                        h(unsigned b, unsigned c, unsigned d);
+unsigned                        i(unsigned b, unsigned c, unsigned d);
+unsigned int                    f_op(unsigned int i);
+unsigned int                    g_op(unsigned int i);
+unsigned int                    h_op(unsigned int i);
+unsigned int                    i_op(unsigned int i);
 
 #endif

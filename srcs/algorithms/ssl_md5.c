@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:19:15 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/23 20:46:07 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/26 03:18:39 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,82 +22,71 @@
         crypt = vectors[B] + ((vectors[A] + vec_fct(vector[B], vector[C], vector[D]) + kernels[i] + chunk[k]) <<< s).
     where i is the iterator, k is the chunk index and s a left retation function.
 */
-
-static void             ssl_md5_crypt_message(unsigned int* vectors,
-        unsigned int* chunks)
+// this can be in utils with appen pagging once this hash works
+static size_t           get_chunks_nb(size_t message_len)
 {
-    unsigned int        crypt;
-    short               iterator;
-    short               k;
-
-    iterator = 0;
-    while (++iterator < MD5_CYCLE_IT)
-    {
-        if (iterator < 16 && (crypt = vec_f(vectors[B], vectors[C], vectors[D])))
-            k = iterator;
-        else if (iterator < 32 && (crypt = vec_g(vectors[B], vectors[C], vectors[D])))
-            k = (iterator * 5 + 1) % 16;
-        else if (iterator < 48 && (crypt = vec_h(vectors[B], vectors[C], vectors[D])))
-            k = (iterator * 3 + 5) % 16;
-        else if (crypt = vec_i(vectors[B], vectors[C], vectors[D]))
-            k = (iterator * 7) % 16;
-        crypt += vectors[A] + g_kernel[iterator] + chunks[k];
-        vectors[A] = vectors[D];
-        vectors[D] = vectors[C];
-        vectors[C] = vectors[B];
-        vectors[B] += vec_rot_left_u32(crypt, g_shift[iterator]);
-    }
+    return (((message_len + 1 + 8 + (CHUNK_BYTE_SIZE - 1)) & ~(CHUNK_BYTE_SIZE - 1)) / CHUNK_BYTE_SIZE);
 }
 
-static void             ssl_md5_crypt(t_ssl_md5* md5, unsigned char* data)
+static void             ssl_md5_algorithm(t_ssl_md5* md5, unsigned char* padded_msg)
 {
-    const unsigned int  chunks_nb = md5->bits / CHUNK_BIT_SIZE;
+    int                 index;
     int                 chunk_index;
+    unsigned int        rotation;
+    const t_operations  operations[4] = { {.operation=f, .chunk_index=f_op}, {.operation=g, .chunk_index=g_op}, 
+        {.operation=h, .chunk_index=h_op}, {.operation=i, .chunk_index=i_op} };
 
     chunk_index = -1;
-    while (++chunk_index < chunks_nb)
+    while (++chunk_index < get_chunks_nb(md5->bytes) / 2 && (index = -1))
     {
         ft_memcpy(md5->algo_buff, md5->buff, sizeof(md5->algo_buff));
-        ssl_md5_crypt_message(md5->algo_buff, (unsigned int*)(data + chunk_index * CHUNK_BYTE_SIZE));
-        md5->buff[A] += md5->algo_buff[A];
-        md5->buff[B] += md5->algo_buff[B];
-        md5->buff[C] += md5->algo_buff[C];
-        md5->buff[D] += md5->algo_buff[D];
+        while (++index < MD5_CYCLE_IT)
+        {
+            rotation = operations[index / 16].operation(md5->algo_buff[B], \
+                md5->algo_buff[C], md5->algo_buff[D]) + md5->algo_buff[A] \
+                + g_sines[index] + ((unsigned int*)(padded_msg \
+                + chunk_index * CHUNK_BYTE_SIZE))[operations[index / 16].chunk_index(index)];
+            md5->algo_buff[A] = md5->algo_buff[D];
+            md5->algo_buff[D] = md5->algo_buff[C];
+            md5->algo_buff[C] = md5->algo_buff[B];
+            md5->algo_buff[B] += vec_rot_left_u32(rotation , g_shift[index]);
+        }
+        index = -1;
+        while (++index < 4)
+            md5->buff[index] += md5->algo_buff[index];
     }
 }
 
-/* mesage lenght must be "n" bits where n = (512 * z) + 448 and z is any number */
+/* message lenght must be "n" bits where n = (512 * z) + 448 and z is any number */
 /* format of the msg : [message][1][pagging of 0s][msg_len] */
-static unsigned int     append_padding(char** message, unsigned int message_size)
+static unsigned int     append_padding(unsigned char** message, size_t message_size, size_t padded_msg_size)
 {
-    unsigned long       size;
-    unsigned int        msg_len;
+    int                 i;
 
-    size = message_size * CHAR_BIT;
-    while (++size % CHUNK_BIT_SIZE != 448)
-        ;
-    msg_len = size;
-    size /= CHAR_BIT;
-    (*message)[size] = 1;
-    ft_memcpy((*message) + size, &msg_len, 4);
-    return (size + 8);
+    if (!(*message = malloc(sizeof(unsigned char) * padded_msg_size)))
+        return (-1);
+    (*message)[message_size] = 0b10000000;
+    i = message_size + 1;
+    while (i < padded_msg_size)
+        *(*message + i++) = 0;
+    *(unsigned long*)(*message + i - 8) = (8 * message_size);
+    return (padded_msg_size);
 }
 
+#include <unistd.h>
 const char*             ssl_md5(const char* data)
 {
     t_ssl_md5           md5;
-	char*				message;
+	unsigned char*		message;
     const unsigned int  size = ft_strlen(data);
     
 	md5 = (t_ssl_md5) {.buff[A]=RVECT_A, .buff[B]=RVECT_B, .buff[C]=RVECT_C, .buff[D]=RVECT_D};
-	if (!(message = ft_calloc(size + CHUNK_BYTE_SIZE, sizeof(char))))
-		return ((void*)0);
-	ft_memcpy(message, data, size);
-    md5.bytes = append_padding(&message, size);
+
+    if (!(md5.bytes = append_padding((unsigned char **)&message, size, get_chunks_nb(size) * CHUNK_BYTE_SIZE)))
+        return (NULL);
     md5.bits = md5.bytes * CHAR_BIT;
-	ssl_md5_crypt(&md5, message);
-    /*for (int i = 0 ; i < 4; i++)
-        printf("%u\n", digest[i]); */
+    ft_memcpy(message, data, size);
+    ssl_md5_algorithm(&md5, message);
 	free(message);
 	return (int_to_str_u32(md5.buff, swap_u32bits));
 }
