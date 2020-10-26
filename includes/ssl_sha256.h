@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 21:12:55 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 21:28:01 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/26 06:38:00 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct                  s_ssl_sha256
     unsigned int				bytes;
 }                               t_ssl_sha256;
 
+/* first 32 bits of the fractional part of the cube root of the 64 1st primes */
 static unsigned int const	g_kernel[64] = {
 	0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1,
 	0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
@@ -59,5 +60,14 @@ static unsigned int const	g_kernel[64] = {
 	0x5b9cca4f, 0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
 	0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 };
+
+unsigned int ch_u32(unsigned int e, unsigned int f, unsigned int g);
+unsigned int ma_u32(unsigned int a, unsigned int b, unsigned int c);
+unsigned int e0_u32(unsigned int a);
+unsigned int o1_u32(unsigned int e);
+unsigned int _f(unsigned int x);
+unsigned int _g(unsigned int x);
+unsigned int _h(unsigned int x);
+unsigned int _i(unsigned int x);
 
 #endif

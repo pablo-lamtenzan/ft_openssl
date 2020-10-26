@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 16:31:35 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/22 21:28:06 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/26 09:01:52 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 #define CHUNK_BIT_SIZE          128
 #define CHUNK_BYTE_SIZE         CHUNK_BIT_SIZE * CHAR_BIT
 
-# define SHA256_CYCLE_IT        80
+# define SHA512_CYCLE_IT        80
 
 typedef struct                  s_ssl_sha512
 {
@@ -76,5 +76,12 @@ static unsigned long const	g_kernel[80] = {
 	0x431d67c49c100d4c, 0x4cc5d4becb3e42b6, 0x597f299cfc657e2a,
 	0x5fcb6fab3ad6faec, 0x6c44198c4a475817
 };
+
+unsigned long ch_u64(unsigned long e, unsigned long f, unsigned long g);
+unsigned long ma_u64(unsigned long a, unsigned long b, unsigned long c);
+unsigned long u64_f(unsigned long x);
+unsigned long u64_g(unsigned long x);
+unsigned long u64_h(unsigned long x);
+unsigned long u64_i(unsigned long x);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:19:15 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/26 03:18:39 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/26 08:33:29 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,22 +57,6 @@ static void             ssl_md5_algorithm(t_ssl_md5* md5, unsigned char* padded_
     }
 }
 
-/* message lenght must be "n" bits where n = (512 * z) + 448 and z is any number */
-/* format of the msg : [message][1][pagging of 0s][msg_len] */
-static unsigned int     append_padding(unsigned char** message, size_t message_size, size_t padded_msg_size)
-{
-    int                 i;
-
-    if (!(*message = malloc(sizeof(unsigned char) * padded_msg_size)))
-        return (-1);
-    (*message)[message_size] = 0b10000000;
-    i = message_size + 1;
-    while (i < padded_msg_size)
-        *(*message + i++) = 0;
-    *(unsigned long*)(*message + i - 8) = (8 * message_size);
-    return (padded_msg_size);
-}
-
 #include <unistd.h>
 const char*             ssl_md5(const char* data)
 {
@@ -82,11 +66,10 @@ const char*             ssl_md5(const char* data)
     
 	md5 = (t_ssl_md5) {.buff[A]=RVECT_A, .buff[B]=RVECT_B, .buff[C]=RVECT_C, .buff[D]=RVECT_D};
 
-    if (!(md5.bytes = append_padding((unsigned char **)&message, size, get_chunks_nb(size) * CHUNK_BYTE_SIZE)))
+    if (!(md5.bytes = append_padding((unsigned char **)&message, size, get_chunks_nb(size) * CHUNK_BYTE_SIZE, NULL)))
         return (NULL);
-    md5.bits = md5.bytes * CHAR_BIT;
     ft_memcpy(message, data, size);
     ssl_md5_algorithm(&md5, message);
 	free(message);
-	return (int_to_str_u32(md5.buff, swap_u32bits));
+	return (int_to_str_u32(md5.buff, 36, 4, swap_u32bits));
 }
