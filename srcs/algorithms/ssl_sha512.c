@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 16:31:20 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/26 09:08:34 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/27 01:47:09 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 static unsigned long	get_chunks_nb(unsigned long size)
 {
-	return ((size + 1 + 8 + 128 - 1) & ~(128 - 1));
+	return (((size + 1 + 8 + 128 - 1) & ~(128 - 1)) / 128);
 }
 
 static void				ssl_sha512_crypt_message(unsigned long* vectors, unsigned long* chunks)
@@ -54,7 +54,7 @@ static void				init_tmp_array(unsigned long* dest, unsigned long* src)
 	}
 }
 
-static void				ssl_sha512_crypt(t_ssl_sha512* sha512, unsigned char* data)
+static void				ssl_sha512_crypt(t_ssl_sha512* sha512, unsigned long* data)
 {
 	unsigned long		tmp[80];
 	int					chunk_index;
@@ -65,9 +65,9 @@ static void				ssl_sha512_crypt(t_ssl_sha512* sha512, unsigned char* data)
 	while (++chunk_index < get_chunks_nb(sha512->bytes) / 2 && (update_index = -1))
 	{
 		ft_memcpy(sha512->algo_buff, sha512->buff, sizeof(sha512->algo_buff));
-		init_tmp_array(tmp, (unsigned long *)(data + chunk_index)); // check this line
+		init_tmp_array(tmp, data + chunk_index * 128);
 		ssl_sha512_crypt_message(sha512->algo_buff, tmp);
-		while (++update_index < 16)
+		while (++update_index < 8)
 			sha512->buff[update_index] += sha512->algo_buff[update_index];
 	}
 }
@@ -84,7 +84,7 @@ const char*				ssl_sha512(const char *data)
 	if (!(sha512.bytes = append_padding((unsigned char**)&message, size, get_chunks_nb(size) * 128, swap_u64bits)))
 		return (NULL);
 	ft_memcpy(message, data, size);
-	ssl_sha512_crypt(&sha512, message);
+	ssl_sha512_crypt(&sha512, (unsigned long*)message);
 	free(message);
 	return (long_to_str_u64(sha512.buff, 144, 8, NULL));
 }

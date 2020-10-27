@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/26 05:51:06 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/26 09:01:26 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/27 01:53:43 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,5 @@ unsigned long u64_h(unsigned long x)
 
 unsigned long u64_i(unsigned long x)
 {
-    return (vec_rot_right_u64(x, 19) ^ vec_rot_right_u64(x, 361) ^ (x >> 6));
+    return (vec_rot_right_u64(x, 19) ^ vec_rot_right_u64(x, 61) ^ (x >> 6));
 }

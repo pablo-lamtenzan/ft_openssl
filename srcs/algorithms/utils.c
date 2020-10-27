@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 18:03:59 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/26 08:51:14 by pablo            ###   ########.fr       */
+/*   Updated: 2020/10/27 01:59:46 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,10 @@ unsigned int vec_rot_right_u32(unsigned int vec, unsigned int rot)
 
 unsigned long vec_rot_left_u64(unsigned long vec, unsigned long rot)
 {
-    return ((vec << rot) | vec >> (32 - rot));
+    return ((vec << rot) | vec >> (64 - rot));
 }
 
 unsigned long vec_rot_right_u64(unsigned long vec, unsigned long rot)
 {
-    return ((vec >> rot) | vec << (32 - rot));
+    return ((vec >> rot) | vec << (64 - rot));
 }
