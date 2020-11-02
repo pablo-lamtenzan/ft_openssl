@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/21 16:31:20 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/27 01:47:09 by pablo            ###   ########.fr       */
+/*   Updated: 2020/11/02 01:39:41 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void				ssl_sha512_crypt(t_ssl_sha512* sha512, unsigned long* data)
 
 	chunk_index = -1;
 	ft_bzero(tmp, 80 * sizeof(unsigned long));
-	while (++chunk_index < get_chunks_nb(sha512->bytes) / 2 && (update_index = -1))
+	while (++chunk_index < get_chunks_nb(sha512->bytes) - 1 && (update_index = -1))
 	{
 		ft_memcpy(sha512->algo_buff, sha512->buff, sizeof(sha512->algo_buff));
 		init_tmp_array(tmp, data + chunk_index * 128);

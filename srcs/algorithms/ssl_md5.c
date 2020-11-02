@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 23:19:15 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/26 08:33:29 by pablo            ###   ########.fr       */
+/*   Updated: 2020/11/02 01:38:41 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void             ssl_md5_algorithm(t_ssl_md5* md5, unsigned char* padded_
         {.operation=h, .chunk_index=h_op}, {.operation=i, .chunk_index=i_op} };
 
     chunk_index = -1;
-    while (++chunk_index < get_chunks_nb(md5->bytes) / 2 && (index = -1))
+    while (++chunk_index < get_chunks_nb(md5->bytes) -1 && (index = -1))
     {
         ft_memcpy(md5->algo_buff, md5->buff, sizeof(md5->algo_buff));
         while (++index < MD5_CYCLE_IT)

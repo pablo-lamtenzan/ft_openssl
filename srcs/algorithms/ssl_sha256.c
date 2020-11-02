@@ -6,7 +6,7 @@
 /*   By: pablo <pablo@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/20 21:19:52 by pablo             #+#    #+#             */
-/*   Updated: 2020/10/26 08:33:06 by pablo            ###   ########.fr       */
+/*   Updated: 2020/11/02 01:39:31 by pablo            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void				ssl_sha256_crypt(t_ssl_sha256* sha256, unsigned int* data)
 
 	chunk_index = -1;
 	ft_bzero(tmp, 64 * sizeof(unsigned int));
-	while (++chunk_index < get_chunks_nb(sha256->bytes) / 2 && (update_index = -1))
+	while (++chunk_index < get_chunks_nb(sha256->bytes) - 1 && (update_index = -1))
 	{
 		ft_memcpy(sha256->algo_buff, sha256->buff, sizeof(sha256->algo_buff));
 		init_tmp_array(tmp, data + chunk_index  * 64);
